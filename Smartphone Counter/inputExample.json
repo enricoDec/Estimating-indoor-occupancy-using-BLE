@@ -1,0 +1,23 @@
+{
+    "uuid": "\"96824878-6425-4877-8306-572e36b926c2-myRoom\"",
+    "timestamp": "8/7/2023 12:27",
+    "room": "myRoom",
+    "scanresult": [
+        {
+            "addr": "41:7b:1e:e9:e1:e5",
+            "descriptor": "Apple Inc. iPhone14,3"
+        },
+        {
+            "addr": "47:81:89:7b:02:49",
+            "descriptor": "Apple Inc. iPhone14,3"
+        },
+        {
+            "addr": "47:23:89:7b:02:49",
+            "descriptor": "Smartphone"
+        },
+        {
+            "addr": "47:23:89:7b:02:49",
+            "descriptor": "Smart Fridge"
+        }
+    ]
+}

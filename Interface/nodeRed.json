@@ -1,0 +1,1520 @@
+[
+    {
+        "id": "630ec83376dcf61e",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d8775232dfe03759",
+        "type": "group",
+        "z": "630ec83376dcf61e",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "b7a75e067edc4298",
+            "10a896f11c4d1e80",
+            "518f836f8d5a6738",
+            "c0f57dbf6e71f6fb",
+            "6101a90714ce27a1",
+            "6258d62f7cbe674f",
+            "49138f17336324c4",
+            "c98df91ffece67dd",
+            "111ad75335e28e2b",
+            "8dd0725bc8ef7363",
+            "4120cb8951d8c3dc",
+            "2d2f751fee0d2dde",
+            "52543d411583195c",
+            "b4fe10100fc47db7",
+            "4ef035894ef8ad74"
+        ],
+        "x": 34,
+        "y": 19,
+        "w": 732,
+        "h": 422
+    },
+    {
+        "id": "bbf8061270eea1c4",
+        "type": "group",
+        "z": "630ec83376dcf61e",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "58182092f070d298",
+            "e0390cc081558948",
+            "c9f0184d34a2ce03",
+            "7e129005bf8ac222",
+            "9b24f197c0d3eb97",
+            "63b7b12a2acc011a",
+            "82491d03716caf51",
+            "950d5b9f8d42f71f",
+            "b78cddb2f08280fa",
+            "4c61750f10684f17",
+            "ae50f756bab07674",
+            "2ace17e77e82e273",
+            "ce27fbc44a66bc38",
+            "7dbce1c985d86003"
+        ],
+        "x": 34,
+        "y": 459,
+        "w": 792,
+        "h": 422
+    },
+    {
+        "id": "36f272c4cbca2578",
+        "type": "group",
+        "z": "630ec83376dcf61e",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "82db18f1829fd9db",
+            "27ce5e6978a41ef6",
+            "371efcc39240c573",
+            "d4b1fbc4498f3577",
+            "9521c0ff78c6a6e9",
+            "8f15dce2b08a242b",
+            "ec239e97428a2c8c"
+        ],
+        "x": 854,
+        "y": 19,
+        "w": 472,
+        "h": 302
+    },
+    {
+        "id": "e83a42a043f9c7aa",
+        "type": "group",
+        "z": "630ec83376dcf61e",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "268252eb2112043f",
+            "2245abb15e56f707",
+            "c2f6f0552cf41295",
+            "40b5489312cd2b68",
+            "6aa22e1b00a25604",
+            "07acc6bbbce67d48",
+            "1fd0ee4b77dc9600",
+            "390b37fec01e0f73",
+            "7414b3be50db5d16",
+            "0077bc9410e507df",
+            "dbab8f7021e0ac7b",
+            "460b1006bca46581",
+            "5943ca4e2b047974",
+            "6c96340e41fabadb",
+            "f8a1bbae2fd55815",
+            "efed0a6173c875d2",
+            "076fd1348da8d2ec",
+            "0c68b16d51087988",
+            "08b704a7b3e56776",
+            "d54058b00983f3a3",
+            "58f6049a82407f6f",
+            "3abb0cbf754f2269",
+            "8c35924b269ac288",
+            "a759e88a038489f6",
+            "48ef0f03b43b9850"
+        ],
+        "x": 34,
+        "y": 1079,
+        "w": 1252,
+        "h": 602
+    },
+    {
+        "id": "1cba11149853fd8c",
+        "type": "mqtt-broker",
+        "name": "Pi MQTT Broker",
+        "broker": "192.168.0.3",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "d017f662582760c5",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "Pi InfluxDB",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://192.168.0.3:8086",
+        "rejectUnauthorized": false
+    },
+    {
+        "id": "58182092f070d298",
+        "type": "mqtt in",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "name": "",
+        "topic": "roomUtilization/scans/+",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "1cba11149853fd8c",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 540,
+        "wires": [
+            [
+                "c9f0184d34a2ce03"
+            ]
+        ]
+    },
+    {
+        "id": "b7a75e067edc4298",
+        "type": "inject",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "Scan myRoom",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "myRoom",
+        "payloadType": "str",
+        "x": 160,
+        "y": 140,
+        "wires": [
+            [
+                "6258d62f7cbe674f"
+            ]
+        ]
+    },
+    {
+        "id": "10a896f11c4d1e80",
+        "type": "mqtt out",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "",
+        "topic": "roomUtilization/doScan",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "1cba11149853fd8c",
+        "x": 630,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "518f836f8d5a6738",
+        "type": "inject",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "Scan all rooms",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "all",
+        "payloadType": "str",
+        "x": 160,
+        "y": 220,
+        "wires": [
+            [
+                "49138f17336324c4"
+            ]
+        ]
+    },
+    {
+        "id": "c0f57dbf6e71f6fb",
+        "type": "mqtt out",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "",
+        "topic": "roomUtilization/doScan",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "1cba11149853fd8c",
+        "x": 630,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "6101a90714ce27a1",
+        "type": "comment",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "Trigger manually",
+        "info": "# Scan result\n## Subscribe to\nroomUtilization/scans/myRoom\nor\nroomUtilization/scans/+\n\n## Publish to\nroomUtilization/scans/myRoom\n\n# Trigger\n## Subscribe to\nroomUtilization/doScan/+\n\n## Publish to\nroomUtilization/doScan/all\nor\nroomUtilization/doScan/myRoom",
+        "x": 160,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "6258d62f7cbe674f",
+        "type": "function",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "Generate Scan UUID",
+        "func": "// Generate a UUID\nfunction generateUUID(room) {\n    var lut = [];\n    for (var i = 0; i < 256; i++) {\n        lut[i] = (i < 16 ? '0' : '') + (i).toString(16);\n    }\n\n    var d0 = Math.random() * 0xffffffff | 0;\n    var d1 = Math.random() * 0xffffffff | 0;\n    var d2 = Math.random() * 0xffffffff | 0;\n    var d3 = Math.random() * 0xffffffff | 0;\n\n    var uuid = lut[d0 & 0xff] + lut[d0 >> 8 & 0xff] + lut[d0 >> 16 & 0xff] + lut[d0 >> 24 & 0xff] + '-' +\n        lut[d1 & 0xff] + lut[d1 >> 8 & 0xff] + '-' + lut[d1 >> 16 & 0x0f | 0x40] + lut[d1 >> 24 & 0xff] + '-' +\n        lut[d2 & 0x3f | 0x80] + lut[d2 >> 8 & 0xff] + '-' + lut[d2 >> 16 & 0xff] + lut[d2 >> 24 & 0xff] +\n        lut[d3 & 0xff] + lut[d3 >> 8 & 0xff] + lut[d3 >> 16 & 0xff] + lut[d3 >> 24 & 0xff];\n\n    var output = {\n        uuid: uuid,\n        room: room\n    };\n\n    return output;\n}\n\n// Get the room from the input message payload\nvar room = msg.payload;\n\n// Generate a UUID with the specified room\nvar generatedUUID = generateUUID(room);\n\n// Set the generated UUID and room as the output message payload\nmsg.payload = generatedUUID;\n\n// Return the message\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 140,
+        "wires": [
+            [
+                "10a896f11c4d1e80"
+            ]
+        ]
+    },
+    {
+        "id": "49138f17336324c4",
+        "type": "function",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "Generate Scan UUID",
+        "func": "// Generate a UUID\nfunction generateUUID(room) {\n    var lut = [];\n    for (var i = 0; i < 256; i++) {\n        lut[i] = (i < 16 ? '0' : '') + (i).toString(16);\n    }\n\n    var d0 = Math.random() * 0xffffffff | 0;\n    var d1 = Math.random() * 0xffffffff | 0;\n    var d2 = Math.random() * 0xffffffff | 0;\n    var d3 = Math.random() * 0xffffffff | 0;\n\n    var uuid = lut[d0 & 0xff] + lut[d0 >> 8 & 0xff] + lut[d0 >> 16 & 0xff] + lut[d0 >> 24 & 0xff] + '-' +\n        lut[d1 & 0xff] + lut[d1 >> 8 & 0xff] + '-' + lut[d1 >> 16 & 0x0f | 0x40] + lut[d1 >> 24 & 0xff] + '-' +\n        lut[d2 & 0x3f | 0x80] + lut[d2 >> 8 & 0xff] + '-' + lut[d2 >> 16 & 0xff] + lut[d2 >> 24 & 0xff] +\n        lut[d3 & 0xff] + lut[d3 >> 8 & 0xff] + lut[d3 >> 16 & 0xff] + lut[d3 >> 24 & 0xff];\n\n    var output = {\n        uuid: uuid,\n        room: room\n    };\n\n    return output;\n}\n\n// Get the room from the input message payload\nvar room = msg.payload;\n\n// Generate a UUID with the specified room\nvar generatedUUID = generateUUID(room);\n\n// Set the generated UUID and room as the output message payload\nmsg.payload = generatedUUID;\n\n// Return the message\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 220,
+        "wires": [
+            [
+                "c0f57dbf6e71f6fb"
+            ]
+        ]
+    },
+    {
+        "id": "e0390cc081558948",
+        "type": "exec",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "command": "cd classify;python3 countSmartphones.py input.json",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "30",
+        "winHide": true,
+        "oldrc": false,
+        "name": "Count Smartphones",
+        "x": 180,
+        "y": 800,
+        "wires": [
+            [
+                "7dbce1c985d86003"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "c98df91ffece67dd",
+        "type": "inject",
+        "z": "630ec83376dcf61e",
+        "d": true,
+        "g": "d8775232dfe03759",
+        "name": "Scan myRoom",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "120",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "myRoom",
+        "payloadType": "str",
+        "x": 160,
+        "y": 320,
+        "wires": [
+            [
+                "2d2f751fee0d2dde"
+            ]
+        ]
+    },
+    {
+        "id": "111ad75335e28e2b",
+        "type": "mqtt out",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "",
+        "topic": "roomUtilization/doScan",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "1cba11149853fd8c",
+        "x": 630,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "8dd0725bc8ef7363",
+        "type": "inject",
+        "z": "630ec83376dcf61e",
+        "d": true,
+        "g": "d8775232dfe03759",
+        "name": "Scan all rooms",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "all",
+        "payloadType": "str",
+        "x": 160,
+        "y": 400,
+        "wires": [
+            [
+                "52543d411583195c"
+            ]
+        ]
+    },
+    {
+        "id": "4120cb8951d8c3dc",
+        "type": "mqtt out",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "",
+        "topic": "roomUtilization/doScan",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "1cba11149853fd8c",
+        "x": 630,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "2d2f751fee0d2dde",
+        "type": "function",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "Generate Scan UUID",
+        "func": "// Generate a UUID\nfunction generateUUID(room) {\n    var lut = [];\n    for (var i = 0; i < 256; i++) {\n        lut[i] = (i < 16 ? '0' : '') + (i).toString(16);\n    }\n\n    var d0 = Math.random() * 0xffffffff | 0;\n    var d1 = Math.random() * 0xffffffff | 0;\n    var d2 = Math.random() * 0xffffffff | 0;\n    var d3 = Math.random() * 0xffffffff | 0;\n\n    var uuid = lut[d0 & 0xff] + lut[d0 >> 8 & 0xff] + lut[d0 >> 16 & 0xff] + lut[d0 >> 24 & 0xff] + '-' +\n        lut[d1 & 0xff] + lut[d1 >> 8 & 0xff] + '-' + lut[d1 >> 16 & 0x0f | 0x40] + lut[d1 >> 24 & 0xff] + '-' +\n        lut[d2 & 0x3f | 0x80] + lut[d2 >> 8 & 0xff] + '-' + lut[d2 >> 16 & 0xff] + lut[d2 >> 24 & 0xff] +\n        lut[d3 & 0xff] + lut[d3 >> 8 & 0xff] + lut[d3 >> 16 & 0xff] + lut[d3 >> 24 & 0xff];\n\n    var output = {\n        uuid: uuid,\n        room: room\n    };\n\n    return output;\n}\n\n// Get the room from the input message payload\nvar room = msg.payload;\n\n// Generate a UUID with the specified room\nvar generatedUUID = generateUUID(room);\n\n// Set the generated UUID and room as the output message payload\nmsg.payload = generatedUUID;\n\n// Return the message\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 320,
+        "wires": [
+            [
+                "111ad75335e28e2b"
+            ]
+        ]
+    },
+    {
+        "id": "52543d411583195c",
+        "type": "function",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "Generate Scan UUID",
+        "func": "// Generate a UUID\nfunction generateUUID(room) {\n    var lut = [];\n    for (var i = 0; i < 256; i++) {\n        lut[i] = (i < 16 ? '0' : '') + (i).toString(16);\n    }\n\n    var d0 = Math.random() * 0xffffffff | 0;\n    var d1 = Math.random() * 0xffffffff | 0;\n    var d2 = Math.random() * 0xffffffff | 0;\n    var d3 = Math.random() * 0xffffffff | 0;\n\n    var uuid = lut[d0 & 0xff] + lut[d0 >> 8 & 0xff] + lut[d0 >> 16 & 0xff] + lut[d0 >> 24 & 0xff] + '-' +\n        lut[d1 & 0xff] + lut[d1 >> 8 & 0xff] + '-' + lut[d1 >> 16 & 0x0f | 0x40] + lut[d1 >> 24 & 0xff] + '-' +\n        lut[d2 & 0x3f | 0x80] + lut[d2 >> 8 & 0xff] + '-' + lut[d2 >> 16 & 0xff] + lut[d2 >> 24 & 0xff] +\n        lut[d3 & 0xff] + lut[d3 >> 8 & 0xff] + lut[d3 >> 16 & 0xff] + lut[d3 >> 24 & 0xff];\n\n    var output = {\n        uuid: uuid,\n        room: room\n    };\n\n    return output;\n}\n\n// Get the room from the input message payload\nvar room = msg.payload;\n\n// Generate a UUID with the specified room\nvar generatedUUID = generateUUID(room);\n\n// Set the generated UUID and room as the output message payload\nmsg.payload = generatedUUID;\n\n// Return the message\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 400,
+        "wires": [
+            [
+                "4120cb8951d8c3dc"
+            ]
+        ]
+    },
+    {
+        "id": "c9f0184d34a2ce03",
+        "type": "join",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "name": "Collect scans",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "payload.scanresult",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "30",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 380,
+        "y": 540,
+        "wires": [
+            [
+                "9b24f197c0d3eb97"
+            ]
+        ]
+    },
+    {
+        "id": "b4fe10100fc47db7",
+        "type": "comment",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "Auto Trigger every 2min",
+        "info": "",
+        "x": 180,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "82db18f1829fd9db",
+        "type": "file",
+        "z": "630ec83376dcf61e",
+        "g": "36f272c4cbca2578",
+        "name": "Make Known smartphones.json",
+        "filename": "classify/smartphones.json",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1170,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "27ce5e6978a41ef6",
+        "type": "inject",
+        "z": "630ec83376dcf61e",
+        "g": "36f272c4cbca2578",
+        "name": "Init",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[\"Phone\",\"iPhone\",\"Samsung Galaxy\",\"Google Pixel\",\"OnePlus\",\"Xiaomi\",\"Huawei\",\"LG\",\"Sony Xperia\",\"Motorola\",\"Nokia\",\"HTC\",\"BlackBerry\",\"Lenovo\",\"ASUS\",\"OPPO\",\"Vivo\",\"Realme\",\"Samsung Galaxy S21\",\"iPhone 12\",\"Google Pixel 5\",\"OnePlus 9\",\"Xiaomi Mi 11\",\"Huawei P40\",\"LG Velvet\",\"Sony Xperia 1 II\",\"Motorola Moto G Power\",\"Nokia 8.3\",\"HTC U12+\",\"BlackBerry Key2\",\"Lenovo Legion Phone Duel\",\"ASUS ROG Phone 5\",\"OPPO Find X3 Pro\",\"Vivo X60 Pro\",\"Realme 8 Pro\",\"Samsung Galaxy Note 20 Ultra\",\"iPhone SE\",\"Google Pixel 4a\",\"OnePlus Nord\",\"Xiaomi Redmi Note 10\",\"Huawei Mate 40 Pro\",\"LG Wing\",\"Sony Xperia 5 II\",\"Motorola Razr\",\"Nokia 5.4\",\"HTC Desire 20+\",\"BlackBerry Evolve\",\"Lenovo K12 Note\",\"ASUS ZenFone 7 Pro\",\"OPPO Reno5 Pro+\",\"Vivo V20 Pro\",\"Realme X7 Pro\",\"Samsung Galaxy Z Fold 2\",\"iPhone 11\",\"Google Pixel 3a\",\"OnePlus 8T\",\"Xiaomi Mi 10T Pro\",\"Huawei P30 Pro\",\"LG G8 ThinQ\"]",
+        "payloadType": "json",
+        "x": 950,
+        "y": 120,
+        "wires": [
+            [
+                "82db18f1829fd9db",
+                "d4b1fbc4498f3577"
+            ]
+        ]
+    },
+    {
+        "id": "371efcc39240c573",
+        "type": "file",
+        "z": "630ec83376dcf61e",
+        "g": "36f272c4cbca2578",
+        "name": "Make countSmartphones.py",
+        "filename": "classify/countSmartphones.py",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1160,
+        "y": 200,
+        "wires": [
+            [
+                "8f15dce2b08a242b"
+            ]
+        ]
+    },
+    {
+        "id": "d4b1fbc4498f3577",
+        "type": "function",
+        "z": "630ec83376dcf61e",
+        "g": "36f272c4cbca2578",
+        "name": "countSmarthphones.py",
+        "func": "var pythonCode = `\nimport json\nimport sys\n\n\ndef rule_based_classification(descriptor, knownSmartphones):\n    for knownSmartphone in knownSmartphones:\n        if (knownSmartphone.lower().replace(\" \", \"\") in descriptor.lower().replace(\" \", \"\")):\n            return True\n\ndef appendUnknownDeviceIfNotAlreadyIn(unknownDevices, descriptor):\n    alreadyIn = False\n    for unknownDevice in unknownDevices:\n        if (unknownDevice == descriptor):\n            alreadyIn = True\n            break\n    if (alreadyIn == False):\n        unknownDevices.append(descriptor)\n\ninputFile = sys.argv[1]\nif (inputFile == None):\n    print(\"No input file specified\")\n    exit(1)\n\nwith open(inputFile, \"r\") as file:\n    json_data = json.load(file)\n\nwith open(\"smartphones.json\", \"r\") as file:\n    knownSmartphones = json.load(file)\n\nwith open(\"unknownDevices.json\", \"r\") as file:\n    unknownDevices = json.load(file)\n\ncounter = 0\nfor result in json_data[\"scanresult\"]:\n    descriptor = result[\"descriptor\"]\n    if (rule_based_classification(descriptor, knownSmartphones)):\n        counter += 1\n    else :\n        appendUnknownDeviceIfNotAlreadyIn(unknownDevices, descriptor)\n\nwith open(\"unknownDevices.json\", \"w\") as file:\n    json.dump(unknownDevices, file)\n\nresult = {\"smartphones\": counter, \"room\": json_data[\"room\"]}\nprint(json.dumps(result))\n\n`;\n\nmsg.payload = pythonCode;\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1150,
+        "y": 160,
+        "wires": [
+            [
+                "371efcc39240c573"
+            ]
+        ]
+    },
+    {
+        "id": "7e129005bf8ac222",
+        "type": "file",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "name": "Write JSon",
+        "filename": "classify/input.json",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 510,
+        "y": 700,
+        "wires": [
+            [
+                "e0390cc081558948"
+            ]
+        ]
+    },
+    {
+        "id": "9b24f197c0d3eb97",
+        "type": "function",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "name": "Merge by UUID and drop duplicates",
+        "func": "var mergedElements = {};\n\nmsg.payload.forEach(function (element) {\n    var uuid = element.uuid;\n\n    if (mergedElements[uuid]) {\n        // UUID already exists, update the scanresult if it's unique\n        var scanresult = JSON.parse(element.scanresult);\n        scanresult.forEach(function (scan) {\n            var addr = scan.addr;\n            var descriptor = scan.descriptor;\n\n            // Check if the address already exists in the merged element\n            var existingScan = mergedElements[uuid].scanresult.find(function (existing) {\n                return existing.addr === addr;\n            });\n\n            if (!existingScan) {\n                mergedElements[uuid].scanresult.push({ addr: addr, descriptor: descriptor });\n            }\n        });\n    } else {\n        // UUID doesn't exist, add the element to mergedElements\n        mergedElements[uuid] = {\n            uuid: uuid,\n            timestamp: element.timestamp,\n            room: element.room,\n            scanresult: JSON.parse(element.scanresult)\n        };\n    }\n});\n\nmsg.payload = Object.values(mergedElements);\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 230,
+        "y": 620,
+        "wires": [
+            [
+                "63b7b12a2acc011a"
+            ]
+        ]
+    },
+    {
+        "id": "63b7b12a2acc011a",
+        "type": "split",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "name": "Split messages",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 500,
+        "y": 620,
+        "wires": [
+            [
+                "4c61750f10684f17"
+            ]
+        ]
+    },
+    {
+        "id": "82491d03716caf51",
+        "type": "delay",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "2",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 320,
+        "y": 700,
+        "wires": [
+            [
+                "7e129005bf8ac222"
+            ]
+        ]
+    },
+    {
+        "id": "268252eb2112043f",
+        "type": "inject",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "MyRoom, ID 1 (1 unique, 1 duplicate)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"scanresult\":\"[{\\\"addr\\\": \\\"41:7b:1e:e9:e1:e5\\\", \\\"descriptor\\\": \\\"Apple Inc. iPhone14,3\\\"}, {\\\"addr\\\": \\\"47:81:89:7b:02:49\\\", \\\"descriptor\\\": \\\"Apple Inc. iPhone14,3\\\"}]\",\"uuid\":\"\\\"96824878-6425-4877-8306-572e36b926c2-myRoom\\\"\",\"timestamp\":\"8/7/2023 12:27\",\"room\":\"myRoom\"}",
+        "payloadType": "json",
+        "x": 250,
+        "y": 1180,
+        "wires": [
+            [
+                "390b37fec01e0f73"
+            ]
+        ]
+    },
+    {
+        "id": "2245abb15e56f707",
+        "type": "inject",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "MyRoom, ID 1 (1 unique, 1 duplicate)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"scanresult\":\"[{\\\"addr\\\": \\\"41:7b:1e:e9:e1:e5\\\", \\\"descriptor\\\": \\\"Apple Inc. iPhone14,3\\\"}, {\\\"addr\\\": \\\"47:23:89:7b:02:49\\\", \\\"descriptor\\\": \\\"Smartphone\\\"}]\",\"uuid\":\"\\\"96824878-6425-4877-8306-572e36b926c2-myRoom\\\"\",\"timestamp\":\"8/7/2023 12:27\",\"room\":\"myRoom\"}",
+        "payloadType": "json",
+        "x": 250,
+        "y": 1220,
+        "wires": [
+            [
+                "390b37fec01e0f73"
+            ]
+        ]
+    },
+    {
+        "id": "c2f6f0552cf41295",
+        "type": "inject",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "OtherRoom, ID 1(1 unique)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"scanresult\":\"[{\\\"addr\\\": \\\"00:04:2f:c1:39:8f\\\", \\\"descriptor\\\": \\\"Smartphone\\\"}]\",\"uuid\":\"\\\"96824878-6425-4877-8306-572e36b926c2-otherRoom\\\"\",\"timestamp\":\"8/7/2023 12:27\",\"room\":\"otherRoom\"}",
+        "payloadType": "json",
+        "x": 210,
+        "y": 1260,
+        "wires": [
+            [
+                "390b37fec01e0f73"
+            ]
+        ]
+    },
+    {
+        "id": "40b5489312cd2b68",
+        "type": "inject",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "3 Smartphones",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"uuid\":\"\\\"96824878-6425-4877-8306-572e36b926c2-myRoom\\\"\",\"timestamp\":\"8/7/2023 12:27\",\"room\":\"myRoom\",\"scanresult\":[{\"addr\":\"41:7b:1e:e9:e1:e5\",\"descriptor\":\"Apple Inc. iPhone14,3\"},{\"addr\":\"47:81:89:7b:02:49\",\"descriptor\":\"Apple Inc. iPhone14,3\"},{\"addr\":\"47:23:89:7b:02:49\",\"descriptor\":\"Smartphone\"}]}",
+        "payloadType": "json",
+        "x": 160,
+        "y": 1500,
+        "wires": [
+            [
+                "6aa22e1b00a25604"
+            ]
+        ]
+    },
+    {
+        "id": "6aa22e1b00a25604",
+        "type": "file",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "",
+        "filename": "classify/input.json",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 390,
+        "y": 1500,
+        "wires": [
+            [
+                "1fd0ee4b77dc9600"
+            ]
+        ]
+    },
+    {
+        "id": "07acc6bbbce67d48",
+        "type": "comment",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "Some Mock Input",
+        "info": "",
+        "x": 190,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "4ef035894ef8ad74",
+        "type": "comment",
+        "z": "630ec83376dcf61e",
+        "g": "d8775232dfe03759",
+        "name": "Trigger Scan",
+        "info": "",
+        "x": 390,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "950d5b9f8d42f71f",
+        "type": "comment",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "name": "Receive Scan Results",
+        "info": "",
+        "x": 160,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "b78cddb2f08280fa",
+        "type": "comment",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "name": "Collect the incoming scan results (wait 30s)",
+        "info": "A delay to be waited after the first scan result can be set (1min should be okay, should not be longer then scan frequency).\nThe scan results are merged by UUID (to group same scan and room) and duplicate scanresults (with same addr) are dropped.",
+        "x": 470,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "4c61750f10684f17",
+        "type": "json",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "name": "To JSon",
+        "property": "payload",
+        "action": "str",
+        "pretty": true,
+        "x": 140,
+        "y": 700,
+        "wires": [
+            [
+                "82491d03716caf51"
+            ]
+        ]
+    },
+    {
+        "id": "1fd0ee4b77dc9600",
+        "type": "exec",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "command": "cd classify;python3 countSmartphones.py input.json",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "30",
+        "winHide": true,
+        "oldrc": false,
+        "name": "Count Smartphones",
+        "x": 600,
+        "y": 1440,
+        "wires": [
+            [
+                "0c68b16d51087988"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "390b37fec01e0f73",
+        "type": "join",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "Collect scans",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "payload.scanresult",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "2",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 620,
+        "y": 1220,
+        "wires": [
+            [
+                "0077bc9410e507df"
+            ]
+        ]
+    },
+    {
+        "id": "7414b3be50db5d16",
+        "type": "file",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "Write JSon",
+        "filename": "classify/input.json",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 370,
+        "y": 1440,
+        "wires": [
+            [
+                "1fd0ee4b77dc9600"
+            ]
+        ]
+    },
+    {
+        "id": "0077bc9410e507df",
+        "type": "function",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "Merge by UUID and drop duplicates",
+        "func": "var mergedElements = {};\n\nmsg.payload.forEach(function (element) {\n    var uuid = element.uuid;\n\n    if (mergedElements[uuid]) {\n        // UUID already exists, update the scanresult if it's unique\n        var scanresult = JSON.parse(element.scanresult);\n        scanresult.forEach(function (scan) {\n            var addr = scan.addr;\n            var descriptor = scan.descriptor;\n\n            // Check if the address already exists in the merged element\n            var existingScan = mergedElements[uuid].scanresult.find(function (existing) {\n                return existing.addr === addr;\n            });\n\n            if (!existingScan) {\n                mergedElements[uuid].scanresult.push({ addr: addr, descriptor: descriptor });\n            }\n        });\n    } else {\n        // UUID doesn't exist, add the element to mergedElements\n        mergedElements[uuid] = {\n            uuid: uuid,\n            timestamp: element.timestamp,\n            room: element.room,\n            scanresult: JSON.parse(element.scanresult)\n        };\n    }\n});\n\nmsg.payload = Object.values(mergedElements);\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 250,
+        "y": 1360,
+        "wires": [
+            [
+                "dbab8f7021e0ac7b"
+            ]
+        ]
+    },
+    {
+        "id": "dbab8f7021e0ac7b",
+        "type": "split",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "Split messages",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 520,
+        "y": 1360,
+        "wires": [
+            [
+                "6c96340e41fabadb",
+                "5943ca4e2b047974"
+            ]
+        ]
+    },
+    {
+        "id": "460b1006bca46581",
+        "type": "delay",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "2",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 180,
+        "y": 1440,
+        "wires": [
+            [
+                "7414b3be50db5d16"
+            ]
+        ]
+    },
+    {
+        "id": "5943ca4e2b047974",
+        "type": "json",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "To JSon",
+        "property": "payload",
+        "action": "str",
+        "pretty": true,
+        "x": 700,
+        "y": 1360,
+        "wires": [
+            [
+                "460b1006bca46581"
+            ]
+        ]
+    },
+    {
+        "id": "9521c0ff78c6a6e9",
+        "type": "comment",
+        "z": "630ec83376dcf61e",
+        "g": "36f272c4cbca2578",
+        "name": "Init (Needed once)",
+        "info": "",
+        "x": 990,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "6c96340e41fabadb",
+        "type": "debug",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "Debug split message",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "f8a1bbae2fd55815",
+        "type": "debug",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "Debug Testing output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1140,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "efed0a6173c875d2",
+        "type": "influxdb out",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "influxdb": "d017f662582760c5",
+        "name": "Send to DB",
+        "measurement": "smartphones",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "s",
+        "retentionPolicyV18Flux": "",
+        "org": "enrico",
+        "bucket": "PEOPLE_COUNTER_TESTING",
+        "x": 1110,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "076fd1348da8d2ec",
+        "type": "change",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "Format",
+        "rules": [
+            {
+                "t": "set",
+                "p": "fields.smartphones",
+                "pt": "msg",
+                "to": "payload.smartphones",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "tags.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$append(fields,tags)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 940,
+        "y": 1440,
+        "wires": [
+            [
+                "efed0a6173c875d2",
+                "f8a1bbae2fd55815"
+            ]
+        ]
+    },
+    {
+        "id": "0c68b16d51087988",
+        "type": "json",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 790,
+        "y": 1440,
+        "wires": [
+            [
+                "076fd1348da8d2ec"
+            ]
+        ]
+    },
+    {
+        "id": "08b704a7b3e56776",
+        "type": "inject",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "2 Smartphones",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"uuid\":\"\\\"96824878-6425-4877-8306-572e36b926c2-myRoom\\\"\",\"timestamp\":\"8/7/2023 12:27\",\"room\":\"myRoom\",\"scanresult\":[{\"addr\":\"41:7b:1e:e9:e1:e5\",\"descriptor\":\"Apple Inc. iPhone14,3\"},{\"addr\":\"47:81:89:7b:02:49\",\"descriptor\":\"Apple Inc. iPhone14,3\"}]}",
+        "payloadType": "json",
+        "x": 160,
+        "y": 1560,
+        "wires": [
+            [
+                "6aa22e1b00a25604"
+            ]
+        ]
+    },
+    {
+        "id": "d54058b00983f3a3",
+        "type": "inject",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "Fetch",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 1640,
+        "wires": [
+            [
+                "58f6049a82407f6f"
+            ]
+        ]
+    },
+    {
+        "id": "58f6049a82407f6f",
+        "type": "function",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "Query",
+        "func": "msg.query = `from(bucket: \"PEOPLE_COUNTER_TESTING\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"smartphones\")\n  |> aggregateWindow(every: 2m, fn: last, createEmpty: false)\n  |> yield(name: \"last\")`;\n\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 270,
+        "y": 1640,
+        "wires": [
+            [
+                "8c35924b269ac288"
+            ]
+        ]
+    },
+    {
+        "id": "3abb0cbf754f2269",
+        "type": "debug",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 1640,
+        "wires": []
+    },
+    {
+        "id": "8c35924b269ac288",
+        "type": "influxdb in",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "influxdb": "d017f662582760c5",
+        "name": "Fetch last 24h",
+        "query": "",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "enrico",
+        "x": 460,
+        "y": 1640,
+        "wires": [
+            [
+                "3abb0cbf754f2269",
+                "a759e88a038489f6"
+            ]
+        ]
+    },
+    {
+        "id": "ae50f756bab07674",
+        "type": "debug",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "name": "Debug output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "2ace17e77e82e273",
+        "type": "influxdb out",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "influxdb": "d017f662582760c5",
+        "name": "Send to DB",
+        "measurement": "smartphones",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "s",
+        "retentionPolicyV18Flux": "",
+        "org": "enrico",
+        "bucket": "PEOPLE_COUNTER_TESTING",
+        "x": 690,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "ce27fbc44a66bc38",
+        "type": "change",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "name": "Format",
+        "rules": [
+            {
+                "t": "set",
+                "p": "fields.smartphones",
+                "pt": "msg",
+                "to": "payload.smartphones",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "tags.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$append(fields,tags)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 520,
+        "y": 800,
+        "wires": [
+            [
+                "2ace17e77e82e273",
+                "ae50f756bab07674"
+            ]
+        ]
+    },
+    {
+        "id": "7dbce1c985d86003",
+        "type": "json",
+        "z": "630ec83376dcf61e",
+        "g": "bbf8061270eea1c4",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 370,
+        "y": 800,
+        "wires": [
+            [
+                "ce27fbc44a66bc38"
+            ]
+        ]
+    },
+    {
+        "id": "8f15dce2b08a242b",
+        "type": "function",
+        "z": "630ec83376dcf61e",
+        "g": "36f272c4cbca2578",
+        "name": "Empty JSon Array",
+        "func": "msg.payload = '[ ]';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1130,
+        "y": 240,
+        "wires": [
+            [
+                "ec239e97428a2c8c"
+            ]
+        ]
+    },
+    {
+        "id": "ec239e97428a2c8c",
+        "type": "file",
+        "z": "630ec83376dcf61e",
+        "g": "36f272c4cbca2578",
+        "name": "Make unknownDevices.json",
+        "filename": "classify/unknownDevices.json",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1160,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a759e88a038489f6",
+        "type": "table-viewer",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "",
+        "property": "payload",
+        "fieldType": "msg",
+        "width": "480",
+        "height": "240",
+        "rows": 10,
+        "active": false,
+        "outputs": 0,
+        "x": 670,
+        "y": 1580,
+        "wires": []
+    },
+    {
+        "id": "48ef0f03b43b9850",
+        "type": "comment",
+        "z": "630ec83376dcf61e",
+        "g": "e83a42a043f9c7aa",
+        "name": "Testing/Debugging",
+        "info": "",
+        "x": 670,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "ed73cd14e04c1822",
+        "type": "file in",
+        "z": "630ec83376dcf61e",
+        "name": "Read unknownDevices.json",
+        "filename": "classify/unknownDevices.json",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 1120,
+        "y": 400,
+        "wires": [
+            [
+                "8a7346875f82a369"
+            ]
+        ]
+    },
+    {
+        "id": "6d7fa78d0c906ef3",
+        "type": "inject",
+        "z": "630ec83376dcf61e",
+        "name": "Trigger",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 910,
+        "y": 400,
+        "wires": [
+            [
+                "ed73cd14e04c1822"
+            ]
+        ]
+    },
+    {
+        "id": "8a7346875f82a369",
+        "type": "debug",
+        "z": "630ec83376dcf61e",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1340,
+        "y": 400,
+        "wires": []
+    }
+]

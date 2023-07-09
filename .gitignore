@@ -1,0 +1,6 @@
+/webinterface/*
+.DS_Store
+stubs/*
+repos/*
+.venv/*
+.vscode/*
