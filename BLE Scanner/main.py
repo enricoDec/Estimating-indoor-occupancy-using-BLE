@@ -4,14 +4,13 @@ from util import utils
 from util.utils import log
 import uasyncio as asyncio
 import config
-import time
 
 
-def scan_on_trigger():
+async def scan_on_trigger():
     log("MQTT > Waiting for scan trigger...")
     while True:
-        mqttClient.check_for_message()
-        time.sleep(0.1)
+        await mqttClient.check_for_message()
+        await asyncio.sleep_ms(100) # add check for update here
 
 
 async def scan_on_loop():
@@ -33,4 +32,7 @@ async def scan_on_loop():
 if (config.TIME_BETWEEN_SCANS != -1):
     asyncio.run(scan_on_loop())
 else:
-    scan_on_trigger()
+    try:
+        asyncio.run(scan_on_trigger())
+    except Exception as e:
+        log("Loop ended with exception: " + str(e))

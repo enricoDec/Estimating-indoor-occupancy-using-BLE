@@ -10,8 +10,8 @@ import sys
 import uasyncio as asyncio
 import bluetooth
 
-
 sys.path.append("")
+aioble.core.log_level = -1
 
 _deviceInfoServiceUUID = bluetooth.UUID(0x180A)
 _modelNumberStringCharUUID = bluetooth.UUID(0x2A24)
@@ -29,8 +29,9 @@ async def do_scan_and_connect(uuid, active=True, duration=5000, connection_timeo
     log("BLE-Scanner: Scan done, found " + str(len(connectable_devices)) +
         " connectable devices. Got info from adv data from: " + str(len(device_infos)) + " devices.")
     utils.free()
-    log("Got following device info from adv data:")
-    _print_devices(device_infos)
+    if len(device_infos) > 0:
+        log("Got following device info from adv data:")
+        _print_devices(device_infos)
     for connectable_device in connectable_devices:
         newDeviceInfo = await connect_and_get_info(connectable_device, connection_timeout)
         if (newDeviceInfo != None):
@@ -144,6 +145,7 @@ async def connect_and_get_info(device, connection_timeout=3000) -> DeviceInfo:
         deviceInfoService = await connection.service(_deviceInfoServiceUUID)
         if deviceInfoService is None:
             log("BLE-Scanner: No Device Info Service found")
+            await connection.disconnect()
         else:
             # Read the model number string characteristic
             modelChar = await deviceInfoService.characteristic(_modelNumberStringCharUUID)

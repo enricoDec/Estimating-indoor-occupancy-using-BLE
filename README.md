@@ -1,5 +1,5 @@
 # BLE (Bluetooth Low Energy) Room occupancy detection
-Here a general overview of the project is given. Under BLE Scanner, Interface and Smartphone Counter a more detailed description of the components and deployment guide is found.
+Here a general overview of the project is given. A deployment guide can be found [here](#deployment).
 
 This project is based on the work of Justin Steven Herbrich, his project can be found [here](https://github.com/jutnhbr/dln-ble-scanner-for-room-utilization). Herbrich's developed an approach to take advange of the fact that most people carry at least one BLE capable device with them. The idea is to use BLE to detect nearby devices and try to determine how many people are found in a room. This project is an attempt to improve Herbrich's approach and make it more scalable and accurate. Herbrich's approach to determine the number of people in a room is based on the assumption, that a BLE Device that allows a connection and has a public address is a consumer device and as such counts as a person.
 Altough his testing showed promising results, there are some flaws in his approach. Most devices nowdays use random MAC addresses to protect the privacy of the user, this includes most Apple devices (iPhones, MacBooks and iPads). All these devices offer a connection over BLE and could be related to a person in the room but they are not counted as a person, because they use a random MAC address. This project tries to solve this problem by using the device name instead of the MAC address to identify a person. The device name is not protected by privacy and can be used to identify a device. This project also tries to make the BLE Scanner more scalable by adding support for multiple BLE Scanners. The BLE Scanners can be distributed across multiple rooms and the data is then sent to a central database. This allows us to scale the system to multiple rooms and buildings.
@@ -98,3 +98,31 @@ Another really interesting [article](https://hexway.io/wp-content/uploads/2020/0
   - Class of Device (0x0D) with the Minor Device Class with bits 2-3 set to 1 (Smartphone) and bits 4-7 set to 0 (Uncategorized).
 - Make assumption about moving or standing devices based on the RSSI. For example, if the RSSI is constantly changing, the device is moving. If the RSSI is constant, the device is standing still. This could be used to filter out devices that are standing still for a long time (e.g. a printer or a TV)
 - Hash the address of the peripherals (more privacy? (not persisted anyway at the moment))
+- Automate the deployment process (Docker?)
+
+# Deployment
+The deployment is rather time consuming and requires a lot of manual steps. I will try to describe the steps as good as possible.
+
+## Prerequisites
+- Host computer that will run: `node-red`, `influxdb` and `MQTT Broker`.
+- One or more ESP32 (any microcontroller with BLE support should work, but may require to reinstall aioble).
+
+## Setup the Host Computer
+1. Install MQTT Broker (e.g. [Mosquitto](https://mosquitto.org/)).
+   1. Be sure to remeber the IP address of the MQTT Broker, User and password.
+   2. The mosquitto.conf file could look like this:
+   ``` bash
+   # listen tcp
+   listener 1883
+   # listen websockets
+   listener 9001
+   listener 8001
+   protocol websockets
+   socket_domain ipv4
+   # allow no auth
+   allow_anonymous true
+   ```
+2. Install [InfluxDB](https://docs.influxdata.com/influxdb/v2.7/get-started/).
+  - Make a bucket named `PEOPLE_COUNTER`
+3. Setup NodeRed (Deployment guide under Interface folder)
+4. Setup the BLE Scanner (Deployment guide under BLE Scanner folder)

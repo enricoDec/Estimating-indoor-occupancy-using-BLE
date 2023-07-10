@@ -4,7 +4,6 @@ from util import utils
 from util.utils import log
 from binascii import hexlify
 from bleScanner import bleScanner
-import uasyncio as asyncio
 import machine
 import time
 import ujson
@@ -16,9 +15,7 @@ brokerAddr = config.MQTT_BROKER_ADDRESS
 mqttc = MQTTClient(hexlify(machine.unique_id()),
                    brokerAddr, port=1883, keepalive=60)
 
-encode = True
-buffer = None
-
+scanTrigger = None
 
 def MQTTConnect():
     try:
@@ -36,54 +33,53 @@ def MQTTConnect():
 
 
 def sub_cb(topic, msg):
-    scanTrigger = ujson.loads(msg)
-    log("MQTT > Message received: " + str(topic.decode()) + " " + str(scanTrigger))
-    if "all" in scanTrigger["room"] or config.MQTT_ROOM_NAME in scanTrigger["room"]:
-        scan_result = asyncio.run(bleScanner.do_scan_and_connect(
+    msgJSon = ujson.loads(msg)
+    log("MQTT > Trigger received: " + str(topic.decode()) + " " + str(msgJSon))
+    if "all" in msgJSon["room"] or config.MQTT_ROOM_NAME in msgJSon["room"]:
+        global scanTrigger
+        scanTrigger = msgJSon
+
+
+async def check_for_message():
+    try:
+        mqttc.check_msg()
+    except OSError:
+        # ignore mqtt.simple throws OSError -1 when a message is received but is empty?
+        return None
+    global scanTrigger
+    if scanTrigger != None:
+        scan_result = await bleScanner.do_scan_and_connect(
             scanTrigger["uuid"],
             config.ACTIVE_SCAN,
             config.SCAN_DURATION,
             config.SCAN_CONNECTION_TIMEOUT,
             config.FILTER_RSSI
-        ))
+        )
         utils.free()
         if (config.MQTT):
             send_data(scan_result)
         utils.free()
-
-
-def check_for_message():
-    try:
-        mqttc.check_msg()
-    except OSError:
-        # ignore lib throws OSError -1 when no message is received?!
-        pass
+        scanTrigger = None
+        log("MQTT > Waiting for scan trigger...")
 
 
 def send_data(data):
     if data is None:
         return None
-    global encode
-    global buffer
-
-    if encode:
-        buffer = ujson.dumps(data)
+    
+    buffer = ujson.dumps(data)
+    log("MQTT > Sending Data: " + str(buffer) + " to " + str(scanTopic))
 
     if (wifiManager.isConnected()):
-        log(scanTopic + str("MQTT > Sending Data..."))
         try:
             mqttc.publish(scanTopic, buffer.encode())
-            encode = True
             utils.free()
         except OSError:
             log("Publishing failed. Retrying...")
             time.sleep(3)
             MQTTConnect()
-            encode = False
             send_data(buffer)
-
     else:
         log("MQTT > Lost Network Connection ...")
         wifiManager.connect()
-        encode = False
         send_data(buffer)
