@@ -1,1 +1,2 @@
 # Smartphone counter
+This script is executed by node-red, it counts how often known Devices specified in a file called `smartphones.json` is present in the `input.json` which need to be passed as an argument. Devices which are not recognised are put under `unknownDevices.json` (so that `smartphones.json` can be extended with more known smartphone descriptors).

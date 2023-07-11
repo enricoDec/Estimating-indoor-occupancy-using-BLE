@@ -124,5 +124,6 @@ The deployment is rather time consuming and requires a lot of manual steps. I wi
    ```
 2. Install [InfluxDB](https://docs.influxdata.com/influxdb/v2.7/get-started/).
   - Make a bucket named `PEOPLE_COUNTER`
-3. Setup NodeRed (Deployment guide under Interface folder)
-4. Setup the BLE Scanner (Deployment guide under BLE Scanner folder)
+3. Setup NodeRed [guide](./Interface/README.md).
+## Setup ESP32
+1. Setup the BLE Scanner [guide](./BLE%20Scanner/README.md).
