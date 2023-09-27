@@ -59,8 +59,10 @@ In the current setup, only one BLE Scanner can be active per room at a given tim
 To address these issues, I have introduced support for multiple BLE Scanners. The workflow is as follows:
 1. The BLE Scanner is initiated via an MQTT message that carries a payload containing a unique scan ID. This scan ID serves to distinguish and group scan results, along with a room ID that identifies the room where the scanner is situated.
 ```json
-{'uuid': 'f56eb9f0-aaf9-436d-b0fb-df65ecb06c7e', 
-'room': 'myRoom'}
+{
+'uuid': 'f56eb9f0-aaf9-436d-b0fb-df65ecb06c7e', 
+'room': 'myRoom'
+}
 ```
 To ensure uniqueness, each BLE Scanner is assigned a distinct room ID and start a scan only if the room id matches it's own room id or the room id is `all`. The central pushlishes the trigger to the topic `roomUtilization/doScan` while the BLE Scanner subscribes to the topic `roomUtilization/doScan`.
 
