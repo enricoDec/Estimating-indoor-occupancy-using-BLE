@@ -116,15 +116,43 @@ mip.install("myLib", mpy=False)
 4. Now run `pip install -U  micropython-<port>-stubs` in the virtual environment. For example: `pip install -U micropython-esp32-stubs`
 
 ### Get code completion for the project by stubbing yourself (Option 3) (Good luck)
-0. [Using](https://github.com/Josverl/micropython-stubber#readme) (the install guide on Github does not work)...
-1. `python3 -m venv .venv` `source .venv/bin/activate` 
-2. `pip install micropython-stubber`
-3. `mkdir all-stubs && mkdir stubs`
-4. `touch pyproject.toml (no clue why or what this does)`
-5. `stubber clone`
-6. `stubber switch v1.18`   
-7. `stubber get-docstubs`
-8. `stubber get-frozen`  
-9. `stubber get-core`
-10. `stubber update-fallback`
-11. Include extraPaths in .vscode/settings.json for the stubs to be found by the IDE. For example: `"python.autoComplete.extraPaths": ["./stubs"]`
+[Using](https://github.com/Josverl/micropython-stubber#readme) (the install guide on Github does not work)...
+1. Create a virtual environment:
+```bash 
+python3 -m venv .venv
+``` 
+2. Activate the virtual environment:
+```bash
+source .venv/bin/activate
+```
+3. Install the stubber: 
+```bash
+pip install micropython-stubber
+```
+4. Run the stubber:
+``` bash
+mkdir all-stubs && mkdir stubs
+```
+5. No clue why or what this does:
+``` bash
+touch pyproject.toml 
+```
+``` bash
+stubber clone
+```
+``` bash
+stubber switch v1.18
+```
+``` bash
+stubber get-docstubs
+```
+``` bash
+stubber get-frozen  
+```
+``` bash
+stubber get-core
+```
+``` bash
+stubber update-fallback
+```
+6. Include extraPaths in .vscode/settings.json for the stubs to be found by the IDE. For example: `"python.autoComplete.extraPaths": ["./stubs"]`
