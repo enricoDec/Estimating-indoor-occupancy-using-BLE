@@ -60,8 +60,8 @@ To address these issues, I have introduced support for multiple BLE Scanners. Th
 1. The BLE Scanner is initiated via an MQTT message that carries a payload containing a unique scan ID. This scan ID serves to distinguish and group scan results, along with a room ID that identifies the room where the scanner is situated.
 ```json
 {
-'uuid': 'f56eb9f0-aaf9-436d-b0fb-df65ecb06c7e', 
-'room': 'myRoom'
+"uuid": "f56eb9f0-aaf9-436d-b0fb-df65ecb06c7e", 
+"room": "myRoom"
 }
 ```
 To ensure uniqueness, each BLE Scanner is assigned a distinct room ID and start a scan only if the room id matches it's own room id or the room id is `all`. The central pushlishes the trigger to the topic `roomUtilization/doScan` while the BLE Scanner subscribes to the topic `roomUtilization/doScan`.
@@ -69,18 +69,18 @@ To ensure uniqueness, each BLE Scanner is assigned a distinct room ID and start 
 2. The BLE Scanner publishes its scan results to a topic structured as `roomUtilization/scans/myRoom` represents the room ID of the scanner. The central system, in turn, subscribes to the general topic `roomUtilization/scans/+`, where the "+" serves as a wildcard that allows it to receive data from all scanner rooms. The scan results are published as a JSON object with the following structure:
 ```json
 {
-  'scanresult': 
-  '[
-    {"addr": "45:88:7b:10:68:b6", "descriptor": "Apple Inc. iPad13,4"},
-    {"addr": "d7:9f:fb:78:8d:c3", "descriptor": "Philips 929002376101"},
-    {"addr": "5e:cc:6c:70:b1:f4", "descriptor": "Apple Inc. MacBookAir8,2"},
-    {"addr": "6f:11:b2:e8:46:58", "descriptor": "Apple Inc. MacBookPro16,3"},
-    {"addr": "58:4d:66:56:32:a7", "descriptor": "Apple Inc. Mac14,9"},
-    {"addr": "4a:27:71:c6:64:29", "descriptor": "Apple Inc. iPhone13,2"}
-  ]', 
-  'uuid': '"f56eb9f0-aaf9-436d-b0fb-df65ecb06c7e-myRoom"', 
-  'room': 'myRoom', 
-  'timestamp': '9/7/2023 16:04'
+  "scanresult": 
+  "[
+    {'addr': '45:88:7b:10:68:b6', 'descriptor': 'Apple Inc. iPad13,4'},
+    {'addr': 'd7:9f:fb:78:8d:c3', 'descriptor': 'Philips 929002376101'},
+    {'addr': '5e:cc:6c:70:b1:f4', 'descriptor': 'Apple Inc. MacBookAir8,2'},
+    {'addr': '6f:11:b2:e8:46:58', 'descriptor': 'Apple Inc. MacBookPro16,3'},
+    {'addr': '58:4d:66:56:32:a7', 'descriptor': 'Apple Inc. Mac14,9'},
+    {'addr': '4a:27:71:c6:64:29', 'descriptor': 'Apple Inc. iPhone13,2'}
+  ]", 
+  "uuid": "f56eb9f0-aaf9-436d-b0fb-df65ecb06c7e-myRoom", 
+  "room": "myRoom", 
+  "timestamp": "9/7/2023 16:04"
 }
 ```
 3. To accommodate multiple scanners, each with its unique scan results, the central system employs a waiting mechanism with a predefined timeout. During this period, it gathers incoming scan results from all scanners, considering that each scanner is identified by a distinct UUID, combining both the room and scan trigger ID. This unique identifier ensures that scans from various rooms and triggers are distinguishable.
