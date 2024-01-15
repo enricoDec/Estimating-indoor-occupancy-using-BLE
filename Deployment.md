@@ -118,6 +118,8 @@ mip.install("myLib", mpy=False)
 ```
 1. Copy the sources from the esp to your local machine using PyMakr or another tool (for example esptool).
 
+Official Documentation can be found [here](https://docs.micropython.org/en/latest/reference/packages.html).
+
 ### Get code completion for the project by stubbing (Option 2)
 1. run `import sys; print( "version:", sys.version, "port:", sys.platform)` to get the port and micropython version
 2. `python3 -m venv .venv` `source .venv/bin/activate` 
