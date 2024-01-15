@@ -34,9 +34,12 @@ async def do_scan_and_connect(uuid, active=True, duration=5000, connection_timeo
         _print_devices(device_infos)
     for connectable_device in connectable_devices:
         newDeviceInfo = await connect_and_get_info(connectable_device, connection_timeout)
+        if newDeviceInfo != None:
+            log("BLE-Scanner: Got info from device: \n" + str(newDeviceInfo))
         if (newDeviceInfo != None):
             device_infos.append(newDeviceInfo)
-        asyncio.sleep_ms(100) # TODO: Check if this is necessary, seems more stable with it
+        # TODO: Check if this is necessary, seems more stable with it
+        asyncio.sleep_ms(100)
         utils.free()
     if device_infos is None:
         return None
@@ -141,20 +144,21 @@ async def connect_and_get_info(device, connection_timeout=3000) -> DeviceInfo:
     modelNumber = None
     connection = None
     try:
-        connection = await device.connect(timeout_ms=connection_timeout)
-        deviceInfoService = await connection.service(_deviceInfoServiceUUID)
-        if deviceInfoService is None:
-            log("BLE-Scanner: No Device Info Service found")
-            await connection.disconnect()
-        else:
-            # Read the model number string characteristic
-            modelChar = await deviceInfoService.characteristic(_modelNumberStringCharUUID)
-            modelNumber = await _read_characteristic_as_utf8(modelChar)
-            # Read the manufacturer string characteristic
-            manufacturerChar = await deviceInfoService.characteristic(_manufacturerStringCharUUID)
-            manufacturer = await _read_characteristic_as_utf8(manufacturerChar)
-            # Disconnect from the device
-            await connection.disconnect()
+        log("BLE-Scanner: Connecting to device: " + str(device.addr_hex()))
+        connection = await device.connect()
+        async with connection:
+            deviceInfoService = await connection.service(_deviceInfoServiceUUID)
+            if deviceInfoService is None:
+                await connection.disconnect()
+            else:
+                # Read the model number string characteristic
+                modelChar = await deviceInfoService.characteristic(_modelNumberStringCharUUID)
+                modelNumber = await _read_characteristic_as_utf8(modelChar)
+                # Read the manufacturer string characteristic
+                manufacturerChar = await deviceInfoService.characteristic(_manufacturerStringCharUUID)
+                manufacturer = await _read_characteristic_as_utf8(manufacturerChar)
+                # Disconnect from the device
+                await connection.disconnect()
     except (OSError) as e:
         log("BLE-Scanner: Exception while getting info for device: " +
             str(device.addr_hex()) + "\nError: " + str(e))

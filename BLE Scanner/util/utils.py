@@ -61,9 +61,7 @@ def getTimestamp():
     return date_and_time
 
 def generate_uuid():
-    import ubinascii
-    import urandom
-    return ubinascii.hexlify(urandom.getrandbits(128)).decode()
+    return os.urandom(16).hex()
 
 def get_room():
     return config.MQTT_ROOM_NAME

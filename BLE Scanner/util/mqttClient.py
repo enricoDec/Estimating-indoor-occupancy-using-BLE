@@ -17,6 +17,7 @@ mqttc = MQTTClient(hexlify(machine.unique_id()),
 
 scanTrigger = None
 
+
 def MQTTConnect():
     try:
         log("MQTT > Broker Address: " + str(brokerAddr))
@@ -66,10 +67,8 @@ async def check_for_message():
 def send_data(data):
     if data is None:
         return None
-    
     buffer = ujson.dumps(data)
     log("MQTT > Sending Data: " + str(buffer) + " to " + str(scanTopic))
-
     if (wifiManager.isConnected()):
         try:
             mqttc.publish(scanTopic, buffer.encode())
