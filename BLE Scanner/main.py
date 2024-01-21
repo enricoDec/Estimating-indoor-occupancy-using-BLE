@@ -18,18 +18,17 @@ async def scan_on_loop():
         scan_result = asyncio.run(bleScanner.do_scan_and_connect(
             utils.generate_uuid(),
             config.ACTIVE_SCAN,
-            config.SCAN_DURATION,
-            config.SCAN_CONNECTION_TIMEOUT,
+            config.SCAN_DURATION_MS,
+            config.SCAN_CONNECTION_TIMEOUT_MS,
             config.FILTER_RSSI
         ))
         utils.free()
-        if (config.MQTT):
-            mqttClient.send_data(scan_result)
+        mqttClient.send_data(scan_result)
         utils.free()
-        await asyncio.sleep(config.TIME_BETWEEN_SCANS)
+        await asyncio.sleep(config.TIME_BETWEEN_SCANS_S)
 
 
-if (config.TIME_BETWEEN_SCANS != -1):
+if (config.TIME_BETWEEN_SCANS_S != -1):
     asyncio.run(scan_on_loop())
 else:
     try:

@@ -19,13 +19,13 @@ MQTT_BASE_TOPIC = "roomUtilization/"
 # ----SCANNER CONFIG----#
 
 # Time in sec between each scan (Default 300s = 5min) or -1 if scan should be triggered via MQTT
-TIME_BETWEEN_SCANS = -1
+TIME_BETWEEN_SCANS_S = 20
 
-# The actual duration of the scan in ms (Default 5000ms).
-SCAN_DURATION = 5000
+# The actual duration of the scan in ms (Default 8000ms).
+SCAN_DURATION_MS = 8000
 
 # Timeout in ms to connect to a device (for each connectable device)
-SCAN_CONNECTION_TIMEOUT = 1000
+SCAN_CONNECTION_TIMEOUT_MS = 5000
 
 # True = Active Scan | False = Passive Scan (Only listens for advertising packets sent by BLE devices, uses less power)
 ACTIVE_SCAN = True

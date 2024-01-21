@@ -52,8 +52,8 @@ async def check_for_message():
         scan_result = await bleScanner.do_scan_and_connect(
             scanTrigger["uuid"],
             config.ACTIVE_SCAN,
-            config.SCAN_DURATION,
-            config.SCAN_CONNECTION_TIMEOUT,
+            config.SCAN_DURATION_MS,
+            config.SCAN_CONNECTION_TIMEOUT_MS,
             config.FILTER_RSSI
         )
         utils.free()

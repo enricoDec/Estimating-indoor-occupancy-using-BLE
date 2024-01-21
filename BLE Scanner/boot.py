@@ -23,9 +23,8 @@ def errorFallback():
 utils.df()
 if (config.NET):
     wifiManager.connect()
-
 try:
-    if (config.MQTT):
+    if (config.MQTT_START):
         mqttClient.MQTTConnect()
 except OSError as e:
     errorFallback()
