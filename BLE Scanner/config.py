@@ -1,20 +1,21 @@
-from util import constants
 # ----APPLICATION FLAGS----#
 # True = Connect to WiFi on Startup
 NET = True
 # True = Connect to MQTT Broker on Startup
 MQTT_START = True
+# True = Transfers Data via MQTT after Scan
+SEND_MQTT = True
 
 # ----WIFI CONNECTION CONFIG----#
-SSID = constants.SSID
-NETWORK_KEY = constants.NETWORK_KEY
+SSID = "MY_SSID" # TODO: Change to your WiFi SSID
+NETWORK_KEY = "MY_KEY" # TODO: Change to your WiFi Key
 
 # ----MQTT CLIENT CONFIG----#
-MQTT = True # True = Transfers Data via MQTT after Scan
-MQTT_BROKER_ADDRESS = constants.MQTT_BROKER_ADDRESS
+MQTT_BROKER_ADDRESS = "BROKER_IP" ## TODO: Change to your MQTT Broker IP
 # This topic pattern is suggested, like this you can subscribe to all rooms with "roomUtilization/scans/#"
 # or to a specific room with "roomUtilization/scans/myRoom". The topic for triggering a scan is "roomUtilization/doScan"
-MQTT_ROOM_NAME = "myRoom" #doScan not allowed as room name (reserved for scan trigger)
+# doScan not allowed as room name (reserved for scan trigger)
+MQTT_ROOM_NAME = "myRoom"
 MQTT_BASE_TOPIC = "roomUtilization/"
 
 # ----SCANNER CONFIG----#

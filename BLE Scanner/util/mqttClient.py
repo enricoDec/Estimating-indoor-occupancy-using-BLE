@@ -16,21 +16,39 @@ mqttc = MQTTClient(hexlify(machine.unique_id()),
                    brokerAddr, port=1883, keepalive=60)
 
 scanTrigger = None
+current_try = 0
+max_retries = 5
 
 
 def MQTTConnect():
-    try:
+    global current_try
+    if current_try == 0:
         log("MQTT > Broker Address: " + str(brokerAddr))
-        log("MQTT TOPIC > Scan result published on: " + str(scanTopic))
-        mqttc.set_callback(sub_cb)
-        mqttc.connect()
-        mqttc.set_last_will(scanTopic, "Offline", retain=True)
-        log("MQTT > Connected to Broker!")
-        mqttc.subscribe(triggerTopic.encode())
-        log("MQTT > Subscribed to: " + str(triggerTopic))
-        utils.free()
-    except OSError:
-        MQTTConnect()
+        log("MQTT TOPIC > Scan result will be published to: " + str(scanTopic))
+    mqttc.set_callback(sub_cb)
+    mqttc.connect()
+    mqttc.set_last_will(scanTopic, "Offline", retain=True)
+    log("MQTT > Connected to Broker!")
+    mqttc.subscribe(triggerTopic.encode())
+    log("MQTT > Subscribed to: " + str(triggerTopic))
+    utils.free()
+
+
+def errorFallback():
+    global current_try
+    global max_retries
+    if (current_try < max_retries):
+        log("Failed to connect to MQTT. Reconnecting... ({} / {})".format(
+            current_try + 1, max_retries))
+        time.sleep(5)
+        current_try = current_try + 1
+        try:
+            MQTTConnect()
+        except OSError:
+            errorFallback()
+    else:
+        log("Max Retries reached. Scan results will not be sent to MQTT")
+        config.SEND_MQTT = False
 
 
 def sub_cb(topic, msg):
@@ -42,7 +60,7 @@ def sub_cb(topic, msg):
         log("MQTT > Scan Triggered!")
 
 
-async def check_for_message():
+async def check_for_message() -> list:
     try:
         mqttc.check_msg()
     except OSError:
@@ -50,19 +68,15 @@ async def check_for_message():
         return None
     global scanTrigger
     if scanTrigger != None:
-        scan_result = await bleScanner.do_scan_and_connect(
+        scan_result = await bleScanner.do_scan(
             scanTrigger["uuid"],
             config.ACTIVE_SCAN,
             config.SCAN_DURATION_MS,
             config.SCAN_CONNECTION_TIMEOUT_MS,
             config.FILTER_RSSI
         )
-        utils.free()
-        if (config.MQTT):
-            send_data(scan_result)
-        utils.free()
         scanTrigger = None
-        log("MQTT > Waiting for scan trigger...")
+        return scan_result
 
 
 def send_data(data):
@@ -80,6 +94,6 @@ def send_data(data):
             MQTTConnect()
             send_data(buffer)
     else:
-        log("MQTT > Lost Network Connection ...")
+        log("MQTT > No Connection. Reconnecting...")
         wifiManager.connect()
         send_data(buffer)

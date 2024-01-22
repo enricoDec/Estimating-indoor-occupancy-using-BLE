@@ -13,21 +13,18 @@ max_retries = 10
 def connect():
     ssid = config.SSID
     password = config.NETWORK_KEY
-
-    if station.isconnected() == True:
+    if (station.isconnected() == True):
         log("WiFiMananger > Already connected")
         return
-
     station.active(True)
     try:
         station.connect(ssid, password)
-    except OSError as e:
+    except OSError:
         global current_try
         global max_retries
-
         if (current_try < max_retries):
-            log("WiFiMananger > Failed to connect. Retrying... (" +
-                      str(current_try) + "/" + str(max_retries) + ")")
+            log("WiFiMananger > Failed to connect. Retrying... ({} / {})".format(
+                current_try, max_retries))
             log("WiFiMananger > status:" + str(station.status()))
             time.sleep(5)
             current_try = current_try + 1
@@ -36,10 +33,8 @@ def connect():
             log("Max Retry Limit reached... Rebooting Device.")
             current_try = 0
             machine.reset()
-
     while station.isconnected() == False:
         pass
-
     log("WiFiMananger > Connection successful")
 
 

@@ -5,6 +5,7 @@ from bleScanner.deviceInfo import DeviceInfo
 from aioble import GattError
 from aioble.device import Device
 from aioble.device import DeviceConnection
+from aioble.client import ClientCharacteristic
 import aioble
 import ujson
 import sys
@@ -23,7 +24,7 @@ _appearanceDataType = 0x19
 _manufacturer_specific_data = 0xFF
 
 
-async def do_scan_and_connect(uuid, active=True, duration=5000, connection_timeout_ms=3000, filter_rssi=-90) -> list:
+async def do_scan(uuid, active=True, duration=5000, connection_timeout_ms=3000, filter_rssi=-90) -> list:
     log("BLE-Scanner: Starting Scan...")
     (device_infos, connectable_devices) = await scan_and_analyze_adv_data(active, duration, filter_rssi)
     log("BLE-Scanner: Collected device information.")
@@ -35,8 +36,8 @@ async def do_scan_and_connect(uuid, active=True, duration=5000, connection_timeo
         log("No device info found in adv data.")
     index = 0
     for connectable_device in connectable_devices:
-        log("BLE-Scanner: Connecting to device ({}/{})...".format(index +
-            1, len(connectable_devices)))
+        log("BLE-Scanner: Connecting to {} ({}/{})".format(
+            connectable_device.addr_hex(), index + 1, len(connectable_devices)))
         newDeviceInfo = await connect_and_analyze_services(connectable_device, connection_timeout_ms)
         if (newDeviceInfo != None):
             device_infos.append(newDeviceInfo)
@@ -156,8 +157,7 @@ async def connect_and_analyze_services(device: Device, connection_timeout_ms=400
     connection = None
     try:
         connection: DeviceConnection = await device.connect(timeout_ms=connection_timeout_ms)
-        log("BLE-Scanner: Connected to device: {}, analyzing services...".format(
-            device.addr_hex()))
+        log("BLE-Scanner: Connected to " + device.addr_hex())
         async with connection:
             deviceInfoService = await connection.service(_deviceInfoServiceUUID, timeout_ms=connection_timeout_ms)
             if deviceInfoService is None:
@@ -177,24 +177,24 @@ async def connect_and_analyze_services(device: Device, connection_timeout_ms=400
             str(device.addr_hex()) + "\nError: " + str(e))
         if (connection is not None):
             await connection.disconnect()  # does not seem to disconnect properly
-    except asyncio.TimeoutError as e:
+    except asyncio.TimeoutError:
         log("BLE-Scanner: Timeout while getting info for device: " +
             str(device.addr_hex()))
     if (manufacturer != None or modelNumber != None):
         deviceInfo = DeviceInfo(
             addr=device.addr_hex(), descriptor=str(manufacturer) + " " + str(modelNumber))
-        log("BLE-Scanner: Got info for device: " + str(deviceInfo))
+        log("BLE-Scanner: Got info for device: \n" + str(deviceInfo))
     else:
-        log("BLE-Scanner: No info found for device")
+        log("BLE-Scanner: No info found for device\n")
     return deviceInfo
 
 
-async def _read_characteristic_as_utf8(characteristic):
+async def _read_characteristic_as_utf8(characteristic: ClientCharacteristic):
     """Reads a characteristic and returns the data as string"""
     if (characteristic is None):
-        log("BLE-Scanner: Characteristic not found")
+        log("BLE-Scanner: Characteristic {} not found".format(
+            str(characteristic)))
         return None
-
     try:
         data = await characteristic.read(timeout_ms=2000)
         return data.decode('utf-8')
