@@ -6,6 +6,7 @@ from aioble import GattError
 from aioble.device import Device
 from aioble.device import DeviceConnection
 from aioble.client import ClientCharacteristic
+from asyncio import Lock
 import aioble
 import ujson
 import sys
@@ -61,47 +62,56 @@ async def do_scan(uuid, active=True, duration=5000, connection_timeout_ms=3000, 
 
 async def scan_and_analyze_adv_data(active=True, duration=5000, filter_rssi=-90, interval_us=30000, window_us=30000) -> tuple[list:DeviceInfo, list:Device]:
     # TODO: Check memory after each result and stop if free mem < 80% or so
-    # TODO: This is unsafe use locks, also when implemented please add check to avoid analyzing the same device adv data twice
     connectable_devices: Device = []
+    connectable_devices_lock = Lock()
     device_infos: DeviceInfo = []
+    devices_lock = Lock()
     async with aioble.scan(duration, interval_us=interval_us, window_us=window_us, active=active) as scanner:
         async for result in scanner:
             deviceName = None
             device = result.device
+            adv_data = result.adv_data
             if (_filter_by_rssi(result, filter_rssi)):
                 log("BLE-Scanner: Ignored device with RSSI >" +
                     str(filter_rssi).strip())
                 continue
             # Get info from adv data
-            if (result.adv_data != None):
+            is_device_known = await _is_device_known(device_infos, device, devices_lock)
+            if (adv_data != None and is_device_known == False):
                 deviceName = _get_descriptor_from_advData(
-                    result.adv_data, False, device.addr_hex())
+                    adv_data, False, device.addr_hex())
             if (deviceName != None):
-                device_infos.append(DeviceInfo(
-                    addr=device.addr_hex(), descriptor=deviceName))
+                async with devices_lock:
+                    device_infos.append(DeviceInfo(
+                        addr=device.addr_hex(), descriptor=deviceName))
                 continue
             # If no info was extracted from the adv data keep the device if connectable
             if (result.connectable == False):
                 continue
-            _update_result(connectable_devices, device)
+            await _update_result(connectable_devices, device, connectable_devices_lock)
             utils.free()
     return device_infos, connectable_devices
 
 
-def _already_found_descriptor_for_device(device_infos: DeviceInfo, device: Device):
-    for device_info in device_infos:
-        if (device_info.addr == device.addr_hex()):
-            return True
-    return False
+async def _is_device_known(device_infos: DeviceInfo, new_device: Device, lock: Lock):
+    is_known = False
+    async with lock:
+        for device_info in device_infos:
+            if (device_info.addr == new_device.addr_hex()):
+                is_known = True
+    return is_known
 
 
-def _update_result(connectable_devices, newDevice):
+async def _update_result(connectable_devices, newDevice, lock: Lock):
+    await lock.acquire()
     for device in connectable_devices:
         if (device == newDevice):
             connectable_devices.remove(newDevice)
             connectable_devices.append(newDevice)
+            lock.release()
             return
     connectable_devices.append(newDevice)
+    lock.release()
 
 
 def _get_descriptor_from_advData(adv_data, logging=False, addr_hex=None):
@@ -177,7 +187,7 @@ async def connect_and_analyze_services(device: Device, connection_timeout_ms=400
             str(device.addr_hex()) + "\nError: " + str(e))
         if (connection is not None):
             await connection.disconnect()  # does not seem to disconnect properly
-    except asyncio.TimeoutError:
+    except asyncio.TimeoutError: # TODO: Retry after timeout? Or log number of timeouts
         log("BLE-Scanner: Timeout while getting info for device: " +
             str(device.addr_hex()))
     if (manufacturer != None or modelNumber != None):

@@ -47,40 +47,33 @@ def errorFallback():
         except OSError:
             errorFallback()
     else:
-        log("Max Retries reached. Scan results will not be sent to MQTT")
-        config.SEND_MQTT = False
+        log("Max Retries reached, rebooting...")
+        machine.reset()
 
 
 def sub_cb(topic, msg):
     msgJSon = ujson.loads(msg)
-    log("MQTT > Trigger received: " + str(topic.decode()) + " " + str(msgJSon))
     if "all" in msgJSon["room"] or config.MQTT_ROOM_NAME in msgJSon["room"]:
         global scanTrigger
         scanTrigger = msgJSon
-        log("MQTT > Scan Triggered!")
 
 
-async def check_for_message() -> list:
+async def check_for_trigger() -> list:
+    # this mess is necessary because mqtt.simple is a garbage library, might be worth looking into alternatives such as https://github.com/fizista/micropython-umqtt.simple2
     try:
         mqttc.check_msg()
     except OSError:
         # ignore mqtt.simple throws OSError -1 when a message is received but is empty?
         return None
     global scanTrigger
-    if scanTrigger != None:
-        scan_result = await bleScanner.do_scan(
-            scanTrigger["uuid"],
-            config.ACTIVE_SCAN,
-            config.SCAN_DURATION_MS,
-            config.SCAN_CONNECTION_TIMEOUT_MS,
-            config.FILTER_RSSI
-        )
+    if (scanTrigger != None):
+        trigger = scanTrigger
         scanTrigger = None
-        return scan_result
+        return trigger
 
 
-def send_data(data):
-    if data is None:
+def send_data_if_enabled(data):
+    if data is None or config.SEND_MQTT == False:
         return None
     buffer = ujson.dumps(data)
     log("MQTT > Sending Data: " + str(buffer) + " to " + str(scanTopic))
@@ -88,12 +81,11 @@ def send_data(data):
         try:
             mqttc.publish(scanTopic, buffer.encode('UTF8'))
             utils.free()
-        except OSError:
-            log("Publishing failed. Retrying...")
-            time.sleep(3)
-            MQTTConnect()
-            send_data(buffer)
+        except OSError as e:
+            log("Publishing failed\n: " + str(e))
+            errorFallback()
+            send_data_if_enabled(buffer)
     else:
         log("MQTT > No Connection. Reconnecting...")
         wifiManager.connect()
-        send_data(buffer)
+        send_data_if_enabled(buffer)
