@@ -10,7 +10,7 @@ async def scan_on_trigger():
     log("MQTT > Waiting for scan trigger...")
     while True:
         await mqttClient.check_for_message()
-        await asyncio.sleep_ms(100) # add check for update here
+        await asyncio.sleep_ms(100)
 
 
 async def scan_on_loop():
@@ -25,13 +25,17 @@ async def scan_on_loop():
         utils.free()
         mqttClient.send_data(scan_result)
         utils.free()
-        await asyncio.sleep(config.TIME_BETWEEN_SCANS_S)
+        await asyncio.sleep_ms(config.TIME_BETWEEN_SCANS_MS)
 
 
-if (config.TIME_BETWEEN_SCANS_S != -1):
-    asyncio.run(scan_on_loop())
-else:
-    try:
-        asyncio.run(scan_on_trigger())
-    except Exception as e:
-        log("Loop ended with exception: " + str(e))
+async def main():
+    if (config.TIME_BETWEEN_SCANS_MS != -1):
+        asyncio.create_task(scan_on_loop())
+    else:
+        asyncio.create_task(scan_on_trigger())
+    while True:
+        await asyncio.sleep_ms(100) # add check for update here
+    log("Main Loop exited.")
+
+
+asyncio.run(main())

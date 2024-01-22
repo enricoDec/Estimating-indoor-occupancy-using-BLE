@@ -28,7 +28,7 @@ async def do_scan_and_connect(uuid, active=True, duration=5000, connection_timeo
     (device_infos, connectable_devices) = await scan_and_analyze_adv_data(active, duration, filter_rssi)
     log("BLE-Scanner: Collected device information.")
     utils.free()
-    if len(device_infos) > 0:
+    if (len(device_infos) > 0):
         log("Got following device info from adv data:")
         _print_devices(device_infos)
     else:
@@ -44,7 +44,7 @@ async def do_scan_and_connect(uuid, active=True, duration=5000, connection_timeo
         asyncio.sleep_ms(100)
         utils.free()
         index += 1
-    if device_infos is None:
+    if (device_infos is None):
         return None
     scan_result = {
         "timestamp": utils.getTimestamp(),
@@ -67,20 +67,20 @@ async def scan_and_analyze_adv_data(active=True, duration=5000, filter_rssi=-90,
         async for result in scanner:
             deviceName = None
             device = result.device
-            if _filter_by_rssi(result, filter_rssi):
+            if (_filter_by_rssi(result, filter_rssi)):
                 log("BLE-Scanner: Ignored device with RSSI >" +
                     str(filter_rssi).strip())
                 continue
             # Get info from adv data
             if (result.adv_data != None):
                 deviceName = _get_descriptor_from_advData(
-                    result.adv_data, True, device.addr_hex())
+                    result.adv_data, False, device.addr_hex())
             if (deviceName != None):
                 device_infos.append(DeviceInfo(
                     addr=device.addr_hex(), descriptor=deviceName))
                 continue
             # If no info was extracted from the adv data keep the device if connectable
-            if result.connectable == False:
+            if (result.connectable == False):
                 continue
             _update_result(connectable_devices, device)
             utils.free()
@@ -89,14 +89,14 @@ async def scan_and_analyze_adv_data(active=True, duration=5000, filter_rssi=-90,
 
 def _already_found_descriptor_for_device(device_infos: DeviceInfo, device: Device):
     for device_info in device_infos:
-        if device_info.addr == device.addr_hex():
+        if (device_info.addr == device.addr_hex()):
             return True
     return False
 
 
 def _update_result(connectable_devices, newDevice):
     for device in connectable_devices:
-        if device == newDevice:
+        if (device == newDevice):
             connectable_devices.remove(newDevice)
             connectable_devices.append(newDevice)
             return
@@ -119,8 +119,12 @@ def _get_descriptor_from_advData(adv_data, logging=False, addr_hex=None):
         i += 1
         if logging:
             log("Type: " + str(data_type), newLine=False)
-            log(" Payload: " + str(hexlify(
-                adv_data[i:i+length-1])))
+            if (data_type == _manufacturer_specific_data and hexlify(adv_data[i:i+length-1]).startswith(b"4c00")):
+                log(" Payload: " + str(hexlify(
+                    adv_data[i:i+length-1])) + " (Apple)")
+            else:
+                log(" Payload: " + str(hexlify(
+                    adv_data[i:i+length-1])))
         if data_type == _completeLocalNameDataType:
             complete_local_name = adv_data[i:i+length-1].decode('utf-8')
         elif data_type == _shortenedLocalNameDataType:
@@ -134,6 +138,8 @@ def _get_descriptor_from_advData(adv_data, logging=False, addr_hex=None):
             # TODO: parse and identify manufacturer specific data
             isPhone = False
         i += length - 1
+    if logging:
+        log("\n")
     if isPhone:
         return "Phone"
     elif complete_local_name != None:
@@ -169,12 +175,12 @@ async def connect_and_analyze_services(device: Device, connection_timeout_ms=400
     except (OSError) as e:
         log("BLE-Scanner: Exception while getting info for device: " +
             str(device.addr_hex()) + "\nError: " + str(e))
-        if connection is not None:
+        if (connection is not None):
             await connection.disconnect()  # does not seem to disconnect properly
     except asyncio.TimeoutError as e:
         log("BLE-Scanner: Timeout while getting info for device: " +
             str(device.addr_hex()))
-    if manufacturer != None or modelNumber != None:
+    if (manufacturer != None or modelNumber != None):
         deviceInfo = DeviceInfo(
             addr=device.addr_hex(), descriptor=str(manufacturer) + " " + str(modelNumber))
         log("BLE-Scanner: Got info for device: " + str(deviceInfo))
@@ -185,7 +191,7 @@ async def connect_and_analyze_services(device: Device, connection_timeout_ms=400
 
 async def _read_characteristic_as_utf8(characteristic):
     """Reads a characteristic and returns the data as string"""
-    if characteristic is None:
+    if (characteristic is None):
         log("BLE-Scanner: Characteristic not found")
         return None
 

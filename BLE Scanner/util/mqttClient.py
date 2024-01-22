@@ -39,6 +39,7 @@ def sub_cb(topic, msg):
     if "all" in msgJSon["room"] or config.MQTT_ROOM_NAME in msgJSon["room"]:
         global scanTrigger
         scanTrigger = msgJSon
+        log("MQTT > Scan Triggered!")
 
 
 async def check_for_message():
@@ -71,7 +72,7 @@ def send_data(data):
     log("MQTT > Sending Data: " + str(buffer) + " to " + str(scanTopic))
     if (wifiManager.isConnected()):
         try:
-            mqttc.publish(scanTopic, buffer.encode())
+            mqttc.publish(scanTopic, buffer.encode('UTF8'))
             utils.free()
         except OSError:
             log("Publishing failed. Retrying...")
