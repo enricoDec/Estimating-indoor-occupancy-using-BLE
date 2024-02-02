@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./data:/var/lib/influxdb2:rw
+    network_mode: host
+    restart: unless-stopped
+    container_name: influxdb
