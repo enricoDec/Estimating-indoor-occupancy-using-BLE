@@ -12,8 +12,9 @@ import config
 scanTopic = config.MQTT_BASE_TOPIC + "scans/" + config.MQTT_ROOM_NAME
 triggerTopic = config.MQTT_BASE_TOPIC + "doScan"
 brokerAddr = config.MQTT_BROKER_ADDRESS
-mqttc = MQTTClient(hexlify(machine.unique_id()),
-                   brokerAddr, port=1883, keepalive=60)
+mqttUser = config.MQTT_USER
+mqttPwd = config.MQTT_PASSWORD
+mqttc = None
 
 scanTrigger = None
 current_try = 0
@@ -21,6 +22,9 @@ max_retries = 5
 
 
 def MQTTConnect():
+    global mqttc
+    mqttc = MQTTClient(hexlify(machine.unique_id()),
+                       brokerAddr, port=1883, user=mqttUser, password=mqttPwd, keepalive=60)
     global current_try
     if current_try == 0:
         log("MQTT > Broker Address: " + str(brokerAddr))
@@ -61,6 +65,7 @@ def sub_cb(topic, msg):
 async def check_for_trigger() -> list:
     # this mess is necessary because mqtt.simple is a garbage library, might be worth looking into alternatives such as https://github.com/fizista/micropython-umqtt.simple2
     try:
+        global mqttc
         mqttc.check_msg()
     except OSError:
         # ignore mqtt.simple throws OSError -1 when a message is received but is empty?
@@ -79,6 +84,7 @@ def send_data_if_enabled(data):
     log("MQTT > Sending Data: " + str(buffer) + " to " + str(scanTopic))
     if (wifiManager.isConnected()):
         try:
+            global mqttc
             mqttc.publish(scanTopic, buffer.encode('UTF8'))
             utils.free()
         except OSError as e:
