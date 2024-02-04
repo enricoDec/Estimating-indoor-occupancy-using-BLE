@@ -9,6 +9,7 @@ Table of Contents
 - [0. Prerequisites](#0-prerequisites)
   - [0.1 Ports](#01-ports)
 - [1. Install Dependencies](#1-install-dependencies)
+  - [1.0 Python3](#10-python3)
   - [1.1 Docker](#11-docker)
   - [1.2 Portainer (Optional)](#12-portainer-optional)
   - [1.3 Get the project](#13-get-the-project)
@@ -26,9 +27,6 @@ Table of Contents
   - [3. Configure the project](#3-configure-the-project)
   - [4. Upload the project to the board](#4-upload-the-project-to-the-board)
 - [Working with the project and throubleshooting](#working-with-the-project-and-throubleshooting)
-  - [(Option 1) Get code completion for the project](#option-1-get-code-completion-for-the-project)
-  - [(Option 2) Get code completion for the project by stubbing](#option-2-get-code-completion-for-the-project-by-stubbing)
-  - [(Option 3) (Good luck) Get code completion for the project by stubbing yourself](#option-3-good-luck-get-code-completion-for-the-project-by-stubbing-yourself)
 
 
 # 0. Prerequisites
@@ -67,9 +65,19 @@ We need 3 services to run the project:
 - [X] Mosquitto
 - [X] InfluxDB
 - [X] Node-Red
+- [X] Python3
+- [X] Docker (Optional)
+- [X] Portainer (Optional)
 
 In my opinion, the best way to run these services is using Docker but, of course, you can install them on your local machine without Docker. Installing them manually might require some changes in the NodeRed flow and the MicroPython code (for example, if you do not configure MQTT to use a username and password, you will need to remove the username and password from the MicroPython code). Skip to the next section if you want to install them manually.
+On a side note NodeRed can create a lot of log entries in journalctl. It is advised to run the following command to limit the log entries:
+```bash
+sudo journalctl --vacuum-size=100M
+```
 
+## 1.0 Python3
+Check the official guide to install Python3 depending on your OS.
+[Official Python3 Beginner Guide](https://wiki.python.org/moin/BeginnersGuide/Download)
 
 ## 1.1 Docker
 Check the official guide to install Docker depending on your OS.
