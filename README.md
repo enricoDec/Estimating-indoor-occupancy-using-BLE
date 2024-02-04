@@ -1,7 +1,10 @@
 # BLE (Bluetooth Low Energy) Room occupancy detection
 This section provides an introduction to the project, while the deployment process is detailed in the [Deployment](./Deployment.md) document.
 
-## Contents
+Table of Contents
+=================
+- [BLE (Bluetooth Low Energy) Room occupancy detection](#ble-bluetooth-low-energy-room-occupancy-detection)
+- [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
   - [Motivation](#motivation)
 - [Improving Herbrich's Approach](#improving-herbrichs-approach)
@@ -13,6 +16,13 @@ This section provides an introduction to the project, while the deployment proce
 - [Implementation](#implementation)
   - [The System Architecture](#the-system-architecture)
 - [Future Work](#future-work)
+  - [In-Depth Analysis of Smartphone Characteristics](#in-depth-analysis-of-smartphone-characteristics)
+  - [Comprehensive Examination of Advertising Data](#comprehensive-examination-of-advertising-data)
+  - [Distinguishing Moving and Stationary Devices](#distinguishing-moving-and-stationary-devices)
+  - [Address Hashing for Enhanced Privacy](#address-hashing-for-enhanced-privacy)
+  - [Streamlined Deployment with Docker](#streamlined-deployment-with-docker)
+  - [Classifier-Based Smartphone Identification](#classifier-based-smartphone-identification)
+  - [Integration with Home Assistant](#integration-with-home-assistant)
 
 
 # Introduction
