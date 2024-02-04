@@ -9,7 +9,7 @@ import time
 import ujson
 import config
 
-scanTopic = config.MQTT_BASE_TOPIC + "scans/" + config.MQTT_ROOM_NAME
+scanTopic = config.MQTT_BASE_TOPIC + "scans/" + utils.get_room()
 triggerTopic = config.MQTT_BASE_TOPIC + "doScan"
 brokerAddr = config.MQTT_BROKER_ADDRESS
 mqttUser = config.MQTT_USER
@@ -57,7 +57,7 @@ def errorFallback():
 
 def sub_cb(topic, msg):
     msgJSon = ujson.loads(msg)
-    if "all" in msgJSon["room"] or config.MQTT_ROOM_NAME in msgJSon["room"]:
+    if "all" in msgJSon["room"] or utils.get_room() in msgJSon["room"]:
         global scanTrigger
         scanTrigger = msgJSon
 

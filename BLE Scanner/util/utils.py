@@ -34,13 +34,13 @@ def log(text: str, newLine=True):
         print(text, end='\n' if newLine else '')
 
 
-def currentDate():
+def current_date():
     now = time.localtime()
     date = "{}/{}/{}".format(now[2], now[1], now[0])
     return date
 
 
-def currentTime():
+def current_time():
     now = time.localtime()
     minutes = 0
     if now[4] < 10:
@@ -51,17 +51,20 @@ def currentTime():
     return c_time
 
 
-def getTimestamp():
+def get_timestamp():
     global synced
     if (synced == False):
         if (wifiManager.isConnected()):
             ntptime.settime()
             synced = True
-    date_and_time = currentDate() + " " + currentTime()
+    date_and_time = current_date() + " " + current_time()
     return date_and_time
 
 def generate_uuid():
     return os.urandom(16).hex()
 
 def get_room():
+    room_name = config.MQTT_ROOM_NAME
+    if (room_name == "doScan"):
+        raise ValueError("Room name 'doScan' is not allowed")
     return config.MQTT_ROOM_NAME

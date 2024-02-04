@@ -49,7 +49,7 @@ async def do_scan(uuid, active=True, duration=5000, connection_timeout_ms=3000, 
     if (device_infos is None):
         return None
     scan_result = {
-        "timestamp": utils.getTimestamp(),
+        "timestamp": utils.get_timestamp(),
         "scanresult": ujson.dumps([ob.__dict__ for ob in device_infos]),
         "uuid": ujson.dumps(str(uuid) + "-" + str(utils.get_room())),
         "room": utils.get_room()
