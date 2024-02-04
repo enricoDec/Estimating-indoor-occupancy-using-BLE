@@ -198,7 +198,7 @@ Open the Node-Red UI in a browser (e.g., http://localhost:1880).
 
 ## 2.c Configure the flow
 1. Run the Init Node to create the required files (it creates some required files, check Smartphone Counter directory).
-![Init Flow Image](/res/NodeRedInitFlow.png)
+![Init Flow Image](res/NodeRedInitFlow.png)
 2. Configure the `Trigger Scan` Node MQTT Server.
 3. Configure the `Send to DB` Node.
  
