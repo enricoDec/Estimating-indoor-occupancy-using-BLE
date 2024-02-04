@@ -1,12 +1,12 @@
 version: '3.7'
 
 services:
-  mosquitto:
-    image: eclipse-mosquitto:latest
+  node-red:
+    image: nodered/node-red:latest
+    environment:
+      - TZ=Europe/Berlin
     volumes:
-      - ./config:/mosquitto/config
-      - ./data:/mosquitto/data
-      - ./log:/mosquitto/log
+      - ./data:/data
     network_mode: host
     restart: unless-stopped
-    container_name: eclipse-mosquitto2
+    container_name: nodered
