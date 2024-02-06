@@ -42,6 +42,7 @@ async def scan_on_trigger(queue):
             config.SCAN_CONNECTION_TIMEOUT_MS,
             config.FILTER_RSSI
         )
+        utils.free()
         mqttClient.send_data_if_enabled(scan_result)
 
 async def check_for_trigger(queue):
@@ -56,6 +57,8 @@ async def check_for_trigger(queue):
         await asyncio.sleep_ms(100)
 
 async def main():
+    log("Free Mem"+ utils.df())
+    log("Time: " + utils.get_timestamp())
     set_global_exception()  # Debug aid
     task = None
     if (config.TIME_BETWEEN_SCANS_MS != -1):

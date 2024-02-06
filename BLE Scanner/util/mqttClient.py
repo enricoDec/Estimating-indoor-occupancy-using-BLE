@@ -80,12 +80,13 @@ async def check_for_trigger() -> list:
 def send_data_if_enabled(data):
     if data is None or config.SEND_MQTT == False:
         return None
+    utils.free()
     buffer = ujson.dumps(data)
-    log("MQTT > Sending Data: " + str(buffer) + " to " + str(scanTopic))
+    log("MQTT > Sending Data to " + str(scanTopic))
     if (wifiManager.isConnected()):
         try:
             global mqttc
-            mqttc.publish(scanTopic, buffer.encode('UTF8'))
+            mqttc.publish(scanTopic, buffer.encode())
             utils.free()
         except OSError as e:
             log("Publishing failed\n: " + str(e))

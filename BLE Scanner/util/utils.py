@@ -15,22 +15,22 @@ def df():
     return ('{0} MB'.format((s[0]*s[3])/1048576))
 
 
-def free(full=False, logging=False):
+def free(full=False):
     gc.collect()
     F = gc.mem_free()
     A = gc.mem_alloc()
     T = F+A
     P = '{0:.2f}%'.format(F/T*100)
-    if (logging):
-        log('Memory - Total:{0} Free:{1} ({2})'.format(T, F, P))
+    log('Memory - Total:{0} Free:{1} ({2})'.format(T, F, P), log_type=0)
     if not full:
         return P
     else:
         return ('Total:{0} Free:{1} ({2})'.format(T, F, P))
 
 
-def log(text: str, newLine=True):
-    if config.LOGGING:
+def log(text: str, newLine=True, log_type=1):
+    # 0: Debug, 1: Info, 2: Warning, 3: Error
+    if config.LOGGING and log_type >= config.LOG_LEVEL:
         print(text, end='\n' if newLine else '')
 
 

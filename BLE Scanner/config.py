@@ -7,6 +7,8 @@ MQTT_START = True
 SEND_MQTT = True
 # True = Prints Scanning Process, Results and other events
 LOGGING = True
+# Log Level (0 = Debug (Includes info and more), 1 = Info, 2 = Warning, 3 = Error)
+LOG_LEVEL = 0
 
 # ----WIFI CONNECTION CONFIG----#
 # TODO: Change to your WiFi SSID
