@@ -10,3 +10,6 @@ services:
     network_mode: host
     restart: unless-stopped
     container_name: nodered
+    logging:
+      options:
+        max-size: 50m
