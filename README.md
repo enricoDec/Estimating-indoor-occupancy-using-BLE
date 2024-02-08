@@ -139,6 +139,59 @@ The heart of the classification process lies in comparing the scan results with 
 
 Upon processing all scan results, the system compiles a summary that includes the number of smartphones detected and the room associated with the scan results. This data is then stored in the InfluxDB database.
 
+## Configuration
+The scanner can be configured by modifying the `config.py` file. The following parameters can be adjusted:
+
+- **APPLICATION FLAGS:**
+  - NET (Connect to WiFi on Startup)
+  - MQTT_START (Connect to MQTT Broker on Startup)
+  - SEND_MQTT (Transfer Scans Data via MQTT after Scan)
+  - ALLOW_CONFIG_UPDATE (Allow Configuration Update via MQTT)
+  - LOGGING (Print Scanning Process, Results, and other events)
+  - LOG_LEVEL (Log Level: 0 = Debug, 1 = Info, 2 = Warning, 3 = Error)
+
+- **WIFI CONNECTION CONFIG:**
+  - SSID (WiFi SSID)
+  - NETWORK_KEY (WiFi Key)
+
+- **MQTT CLIENT CONFIG:**
+  - MQTT_BROKER_ADDRESS (MQTT Broker IP)
+  - MQTT_USER (MQTT User)
+  - MQTT_PASSWORD (MQTT Password)
+  - MQTT_ROOM_NAME (MQTT Room Name)
+  - MQTT_BASE_TOPIC (MQTT Base Topic)
+
+- **SCANNER CONFIG:**
+  - TIME_BETWEEN_SCANS_MS (Time in seconds between each scan)
+  - SCAN_DURATION_MS (Duration of the scan in milliseconds)
+  - SCAN_CONNECTION_TIMEOUT_MS (Timeout in milliseconds to connect to a device)
+  - ACTIVE_SCAN (True for Active Scan, False for Passive Scan)
+  - FILTER_RSSI (Only include devices with a higher RSSI; 0 for no filter)
+
+Furthermore most of these settings can be updated directly on the device via mqtt. By default the device is subscribed to the topic `roomUtilization/updateConfig` and listens for configuration updates. The following message can be used to update the configuration:
+
+```json
+{
+  "LOGGING": true,
+  "LOG_LEVEL": 0,
+  "MQTT_CLIENT_CONFIG": {
+    "MQTT_BROKER_ADDRESS": "YOUR_MQTT_BROKER_ADDRESS",
+    "MQTT_USER": "YOUR_MQTT_USER",
+    "MQTT_PASSWORD": "YOUR_MQTT_PASSWORD",
+    "MQTT_ROOM_NAME": "myRoom",
+    "MQTT_BASE_TOPIC": "roomUtilization/"
+  },
+  "SCANNER_CONFIG": {
+    "TIME_BETWEEN_SCANS_MS": null,
+    "SCAN_DURATION_MS": 8000,
+    "SCAN_CONNECTION_TIMEOUT_MS": null,
+    "ACTIVE_SCAN": true,
+    "FILTER_RSSI": -100
+  }
+}
+```
+
+If a value is set to `null` it will not be updated. This feature can be disabled by setting `ALLOW_CONFIG_UPDATE` to `False` in the `config.py` file.
 # Future Work
 ## In-Depth Analysis of Smartphone Characteristics
 One possibility is to conduct a more comprehensive analysis of services and characteristics related to smartphones. For instance, the "Phone Alert Status" characteristic could offer additional insights to further refine smartphone identification.

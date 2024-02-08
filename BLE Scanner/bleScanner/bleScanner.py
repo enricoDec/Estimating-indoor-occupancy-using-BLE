@@ -1,3 +1,8 @@
+import aioble
+import ujson
+import sys
+import uasyncio as asyncio
+import bluetooth
 from util import utils
 from util.utils import log
 from binascii import hexlify
@@ -8,11 +13,7 @@ from aioble.client import ClientCharacteristic
 from aioble.central import ScanResult
 from bleScanner.deviceInfo import DeviceInfo
 from asyncio import Lock
-import aioble
-import ujson
-import sys
-import uasyncio as asyncio
-import bluetooth
+
 
 sys.path.append("")
 aioble.core.log_level = -1
@@ -26,7 +27,7 @@ _appearanceDataType = 0x19
 _manufacturer_specific_data = 0xFF
 
 
-async def do_scan(uuid, active=True, scan_duration_ms=5000, connection_timeout_ms=3000, filter_rssi=-90) -> list:
+async def do_scan(active=True, scan_duration_ms=5000, connection_timeout_ms=3000, filter_rssi=-90) -> list[DeviceInfo]:
     log("BLE-Scanner: Starting Scan...")
     # Scan for devices and analyze adv data
     scan_results: list[ScanResult] = await scan_and_collect_scan_results(active, scan_duration_ms, filter_rssi)
@@ -49,7 +50,7 @@ async def do_scan(uuid, active=True, scan_duration_ms=5000, connection_timeout_m
     for i in range(len(scan_results)):
         scanResult: ScanResult = scan_results[i]
         log("BLE-Scanner: Connecting to {} ({}/{})".format(
-            scanResult.device.addr_hex(), i + 1, len(scan_results)), log_type=0)
+            scanResult.device.addr_hex(), i + 1, len(scan_results)), log_type=1)
         newDeviceInfo: DeviceInfo = await connect_and_analyze(scanResult, connection_timeout_ms)
         device_infos.append(newDeviceInfo)
         # TODO: Check if this is necessary, seems more stable with it
@@ -60,16 +61,9 @@ async def do_scan(uuid, active=True, scan_duration_ms=5000, connection_timeout_m
     utils.free()
     if (device_infos == None or len(device_infos) == 0):
         return None
-    scan_result = {
-        "timestamp": utils.get_timestamp(),
-        "scanresult": ujson.dumps([ob.__dict__ for ob in device_infos]),
-        "uuid": ujson.dumps(str(uuid) + "-" + str(utils.get_room())),
-        "room": utils.get_room()
-    }
-    device_infos.clear()
     utils.free()
     log("BLE-Scanner: Scan finished.")
-    return scan_result
+    return device_infos
 
 
 async def scan_and_collect_scan_results(active=True, scan_duration_ms=5000, filter_rssi=-90, interval_us=30000, window_us=30000) -> list[ScanResult]:
@@ -173,7 +167,7 @@ async def connect_and_analyze(scanResult: ScanResult, connection_timeout_ms=5000
     except asyncio.TimeoutError:
         # TODO: Retry after timeout?
         log("BLE-Scanner: Timeout while getting info for device: " +
-            str(device.addr_hex()), log_type=2)
+            str(device.addr_hex()), log_type=0)
     if (manufacturer != None or modelNumber != None):
         deviceInfo.descriptor = manufacturer + " " + modelNumber
     return deviceInfo
@@ -189,7 +183,7 @@ async def _read_characteristic_as_utf8(characteristic: ClientCharacteristic, tim
         data = await characteristic.read(timeout_ms)
         return data.decode('utf-8')
     except GattError as e:
-        log("BLE-Scanner: GattError during read: " + str(e))
+        log("BLE-Scanner: GattError during read: " + str(e), log_type=0)
         return None
 
 
@@ -198,8 +192,8 @@ def _print_devices(device_infos: list[DeviceInfo], only_with_descriptor=False):
     if (device_infos == None or len(device_infos) == 0):
         return
     log("---------------Device List---------------")
-    log("{:<17} {:<5} {:<26} {:<5} {:<5} {:<5}".format(
-        "ADDR", "RSSI", "Descriptor", "Cntbl", "Succ", "Manufacturer Code"))
+    log("{:<17} {:<5} {:<26} {:<5} {:<5} {:<5} {:<5}".format(
+        "ADDR", "RSSI", "Descriptor", "Cntbl", "Succ", "Manuf", "Connection Attempts"))
     for device_info in device_infos:
         if (only_with_descriptor and device_info.descriptor == None):
             continue

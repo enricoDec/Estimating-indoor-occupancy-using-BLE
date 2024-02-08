@@ -5,6 +5,8 @@ NET = True
 MQTT_START = True
 # True = Transfers Scands Data via MQTT after Scan
 SEND_MQTT = True
+# Allow to update the configuration via MQTT
+ALLOW_CONFIG_UPDATE = True
 # True = Prints Scanning Process, Results and other events
 LOGGING = True
 # Log Level (0 = Debug (Includes info and more), 1 = Info, 2 = Warning, 3 = Error)
