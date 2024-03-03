@@ -17,3 +17,10 @@ class DeviceInfo:
 
     def __eq__(self, other):
         return self.addr == other.addr
+
+    def update(self, newDeviceInfo):
+        if (newDeviceInfo.addr == self.addr):
+            self.connAttempts = newDeviceInfo.connAttempts
+            self.connSuccessful = newDeviceInfo.connSuccessful
+            if (self.descriptor == None and newDeviceInfo.descriptor != None):
+                self.descriptor = newDeviceInfo.descriptor

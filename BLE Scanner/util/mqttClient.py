@@ -92,7 +92,7 @@ async def check_for_trigger() -> list:
 
 def send_data(uuid, device_infos: list[DeviceInfo]):
     if device_infos is None or config.SEND_MQTT == False:
-        log("MQTT > No data to send")
+        log("MQTT > No data send")
         return None
     utils.free()
     for i in range(0, len(device_infos), 10):

@@ -1,5 +1,4 @@
 import aioble
-import ujson
 import sys
 import uasyncio as asyncio
 import bluetooth
@@ -29,41 +28,51 @@ _manufacturer_specific_data = 0xFF
 
 async def do_scan(active=True, scan_duration_ms=5000, connection_timeout_ms=3000, filter_rssi=-90) -> list[DeviceInfo]:
     log("BLE-Scanner: Starting Scan...")
-    # Scan for devices and analyze adv data
     scan_results: list[ScanResult] = await scan_and_collect_scan_results(active, scan_duration_ms, filter_rssi)
-    log("BLE-Scanner: Found {} devices.".format(len(scan_results)))
-    utils.free()
-    device_infos: list[DeviceInfo] = []
+    post_scan(scan_results)
+    # analyze adv data
+    collected_info: dict[str, DeviceInfo] = {}
     for scan_result in scan_results:
         device: Device = scan_result.device
-        (descriptor, manufacturerCode) = analyze_adv_data(scan_result.adv_data, device.addr_hex())
-        device_infos.append(DeviceInfo(device.addr_hex(), scan_result.rssi, scan_result.connectable, descriptor, manufacturerCode))
-    if (len(device_infos) > 0):
-        log("Got following device info from adv data:")
-        _print_devices(device_infos, True)
-    else:
-        log("No device info found in adv data.", log_type=0)
-    # Filter out devices that are not connectable and not in the device_infos list (they have a descriptor already)
-    scan_results = [scan_result for scan_result in scan_results if scan_result.connectable
-                    and any(scan_result.device.addr_hex() == device.addr for device in device_infos)]
+        addr = device.addr_hex()
+        (descriptor, manufacturerCode) = analyze_adv_data(
+            scan_result.adv_data, addr)
+        collected_info[addr] = DeviceInfo(
+            addr, scan_result.rssi, scan_result.connectable, descriptor, manufacturerCode)
+    post_analyze_adv(collected_info)
     # Connect to devices and get more info
-    for i in range(len(scan_results)):
-        scanResult: ScanResult = scan_results[i]
+    connectable_scan_results = _get_connectable_scan_results_with_no_descriptor(
+        scan_results, collected_info)
+    for i in range(len(connectable_scan_results)):
+        scanResult: ScanResult = connectable_scan_results[i]
         log("BLE-Scanner: Connecting to {} ({}/{})".format(
-            scanResult.device.addr_hex(), i + 1, len(scan_results)), log_type=1)
+            scanResult.device.addr_hex(), i + 1, len(connectable_scan_results)), log_type=1)
         newDeviceInfo: DeviceInfo = await connect_and_analyze(scanResult, connection_timeout_ms)
-        device_infos.append(newDeviceInfo)
-        # TODO: Check if this is necessary, seems more stable with it
+        _update_device_infos(collected_info, newDeviceInfo)
         utils.free()
         asyncio.sleep_ms(100)
-    _print_devices(device_infos)
+    _print_devices(collected_info)
     scan_results.clear()
     utils.free()
-    if (device_infos == None or len(device_infos) == 0):
+    if (collected_info == None or len(collected_info) == 0):
         return None
-    utils.free()
     log("BLE-Scanner: Scan finished.")
-    return device_infos
+    return list(collected_info.values())
+
+
+def post_analyze_adv(collected_info):
+    if (len(collected_info) > 0 and any(device_info.descriptor for device_info in collected_info.values())):
+        log("Got following device info from adv data:")
+        _print_devices(collected_info, True)
+    else:
+        log("No device info found in adv data.", log_type=0)
+
+
+def post_scan(scan_results):
+    log("BLE-Scanner: Found {} devices.".format(len(scan_results)))
+    if (len(scan_results) > 0):
+        assert len(scan_results) == len(set(scan_results))
+    utils.free()
 
 
 async def scan_and_collect_scan_results(active=True, scan_duration_ms=5000, filter_rssi=-90, interval_us=30000, window_us=30000) -> list[ScanResult]:
@@ -187,17 +196,17 @@ async def _read_characteristic_as_utf8(characteristic: ClientCharacteristic, tim
         return None
 
 
-def _print_devices(device_infos: list[DeviceInfo], only_with_descriptor=False):
+def _print_devices(device_infos: dict[str, DeviceInfo], only_with_descriptor=False):
     """Prints a list of devices"""
     if (device_infos == None or len(device_infos) == 0):
         return
     log("---------------Device List---------------")
     log("{:<17} {:<5} {:<26} {:<5} {:<5} {:<5} {:<5}".format(
         "ADDR", "RSSI", "Descriptor", "Cntbl", "Succ", "Manuf", "Connection Attempts"))
-    for device_info in device_infos:
+    for device_info in device_infos.values():
         if (only_with_descriptor and device_info.descriptor == None):
             continue
-        log(device_info.__str__())
+        log(device_info)
     log("\n")
 
 
@@ -207,3 +216,15 @@ def _filter_by_rssi(rssi, max_rssi):
         return False
     else:
         return max_rssi > rssi
+
+
+def _get_connectable_scan_results_with_no_descriptor(scan_results: list[ScanResult], collected_info: dict[str, DeviceInfo]) -> list[ScanResult]:
+    return [scan_result for scan_result in scan_results if scan_result.connectable and collected_info[scan_result.device.addr_hex()].descriptor == None]
+
+
+def _update_device_infos(collected_infos: dict[str, DeviceInfo], newDeviceInfo: DeviceInfo):
+    # if new device addr is already in collected_infos, update the info
+    if newDeviceInfo.addr in collected_infos:
+        collected_infos[newDeviceInfo.addr].update(newDeviceInfo)
+    else:
+        collected_infos[newDeviceInfo.addr] = newDeviceInfo
