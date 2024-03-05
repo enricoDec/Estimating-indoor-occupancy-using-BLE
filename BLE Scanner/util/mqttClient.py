@@ -95,16 +95,20 @@ def send_data(uuid, device_infos: list[DeviceInfo]):
         log("MQTT > No data send")
         return None
     utils.free()
+    total_parts = (len(device_infos) + 9) // 10 # ceil(len(device_infos) / 10)
     for i in range(0, len(device_infos), 10):
+        current_part = int(i/10) + 1 # starts at 1
         data = {
-            'timestamp': utils.get_timestamp(),
-            'scanresult': ujson.dumps([device_info.__dict__ for device_info in device_infos[i:i+10]]),
+            'timestamp_utc': utils.get_timestamp(),
+            'scanresult': [device_info.__dict__ for device_info in device_infos[i:i+10]],
             'uuid': str(uuid),
-            'room': utils.get_room()
+            'room': utils.get_room(),
+            'part': current_part,
+            'totalParts': total_parts
         }
         data = ujson.dumps(data)
-        log("MQTT > Sending Data Chunk ({}/{}) to {}".format(int(i/10) + 1,
-            int(len(device_infos) / 10), scanTopic))
+        log("MQTT > Sending Data Part ({}/{}) to {}".format(current_part,
+            total_parts, scanTopic))
         if (wifiManager.isConnected()):
             try:
                 global mqttc
