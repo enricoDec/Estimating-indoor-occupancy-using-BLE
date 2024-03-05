@@ -3,4 +3,4 @@
 stubs/*
 repos/*
 .venv/*
-.vscode/*
+.vscode/

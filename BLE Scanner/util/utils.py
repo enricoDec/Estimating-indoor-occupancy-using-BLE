@@ -6,7 +6,7 @@ import ntptime
 import time
 
 
-ntptime.host = "1.europe.pool.ntp.org"
+ntptime.host = config.NTP_HOST
 synced = False
 
 
