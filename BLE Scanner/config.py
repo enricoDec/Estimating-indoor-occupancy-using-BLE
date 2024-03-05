@@ -1,5 +1,3 @@
-from util import constants as const
-
 # ----APPLICATION FLAGS----#
 # True = Connect to WiFi on Startup
 NET = True
@@ -18,17 +16,17 @@ NTP_HOST = "pool.ntp.org"
 
 # ----WIFI CONNECTION CONFIG----#
 # TODO: Change to your WiFi SSID
-SSID = const.SSID
+SSID = "MY_SSID"
 # TODO: Change to your WiFi Key
-NETWORK_KEY = const.NETWORK_KEY
+NETWORK_KEY = "MY_KEY"
 
 # ----MQTT CLIENT CONFIG----#
 # TODO: Change to your MQTT Broker IP
-MQTT_BROKER_ADDRESS = const.MQTT_BROKER_ADDRESS
+MQTT_BROKER_ADDRESS = "localhost"
 # TODO: Change to your MQTT User set to None if no user is needed
-MQTT_USER = const.MQTT_USER
+MQTT_USER = "mqtt"
 # TODO: Change to your MQTT Password set to None if no password is needed
-MQTT_PASSWORD = const.MQTT_PASSWORD
+MQTT_PASSWORD = "password"
 # This topic pattern is suggested, like this you can subscribe to all rooms with "roomUtilization/scans/#"
 # or to a specific room with "roomUtilization/scans/myRoom". The topic for triggering a scan is "roomUtilization/doScan"
 # doScan not allowed as room name (reserved for scan trigger)
