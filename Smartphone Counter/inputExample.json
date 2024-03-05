@@ -1,23 +1,61 @@
 {
-    "uuid": "\"96824878-6425-4877-8306-572e36b926c2-myRoom\"",
-    "timestamp": "8/7/2023 12:27",
+    "timestamp_utc": "5/3/2024 15:27",
     "room": "myRoom",
+    "uuid": "e7965ee2b2fcd2d9e50cf670d9cas94d",
     "scanresult": [
         {
-            "addr": "41:7b:1e:e9:e1:e5",
-            "descriptor": "Apple Inc. iPhone14,3"
+            "connAttempts": 0,
+            "rssi": -76,
+            "addr": "32:98:ba:11:24:68",
+            "connectable": false,
+            "connSuccessful": false,
+            "descriptor": null,
+            "manufacturerCode": 76
         },
         {
-            "addr": "47:81:89:7b:02:49",
-            "descriptor": "Apple Inc. iPhone14,3"
+            "connAttempts": 0,
+            "rssi": -52,
+            "addr": "c2:21:2c:e1:66:00",
+            "connectable": false,
+            "connSuccessful": false,
+            "descriptor": null,
+            "manufacturerCode": 76
         },
         {
-            "addr": "47:23:89:7b:02:49",
-            "descriptor": "Smartphone"
+            "connAttempts": 1,
+            "rssi": -82,
+            "addr": "f1:51:dd:1a:d0:1d",
+            "connectable": true,
+            "connSuccessful": true,
+            "descriptor": null,
+            "manufacturerCode": 76
         },
         {
-            "addr": "47:23:89:7b:02:49",
-            "descriptor": "Smart Fridge"
+            "connAttempts": 1,
+            "rssi": -79,
+            "addr": "64:2c:e4:17:2c:d2",
+            "connectable": true,
+            "connSuccessful": true,
+            "descriptor": "Apple Inc. iPhone15,3",
+            "manufacturerCode": 76
+        },
+        {
+            "connAttempts": 0,
+            "rssi": -44,
+            "addr": "7b:c4:13:f9:8f:1a",
+            "connectable": false,
+            "connSuccessful": false,
+            "descriptor": null,
+            "manufacturerCode": 76
+        },
+        {
+            "connAttempts": 1,
+            "rssi": -80,
+            "addr": "e7:e7:65:0b:48:6e",
+            "connectable": true,
+            "connSuccessful": true,
+            "descriptor": null,
+            "manufacturerCode": 1447
         }
     ]
 }
