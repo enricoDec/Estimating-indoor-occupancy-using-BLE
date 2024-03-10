@@ -1,8 +1,8 @@
 from util.utils import log
+from util import utils
 import config
 import time
 import network
-import machine
 
 station = network.WLAN(network.STA_IF)
 
@@ -11,8 +11,8 @@ max_retries = 10
 
 
 def connect():
-    ssid = config.SSID
-    password = config.NETWORK_KEY
+    ssid = config.get(config.SSID)
+    password = config.get(config.NETWORK_KEY)
     if (station.isconnected() == True):
         log("WiFiMananger > Already connected")
         return
@@ -32,9 +32,7 @@ def connect():
         else:
             log("Max Retry Limit reached... Rebooting Device.")
             current_try = 0
-            machine.reset()
-    while station.isconnected() == False:
-        pass
+            utils.reboot()
     log("WiFiMananger > Connection successful")
 
 

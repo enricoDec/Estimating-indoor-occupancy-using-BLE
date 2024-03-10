@@ -27,7 +27,7 @@ _manufacturer_specific_data = 0xFF
 
 
 async def do_scan(active=True, scan_duration_ms=5000, connection_timeout_ms=3000, filter_rssi=-90) -> list[DeviceInfo]:
-    log("BLE-Scanner: Starting Scan...")
+    log("BLE-Scanner > Starting Scan...")
     scan_results: list[ScanResult] = await scan_and_collect_scan_results(active, scan_duration_ms, filter_rssi)
     post_scan(scan_results)
     # analyze adv data
@@ -45,7 +45,7 @@ async def do_scan(active=True, scan_duration_ms=5000, connection_timeout_ms=3000
         scan_results, collected_info)
     for i in range(len(connectable_scan_results)):
         scanResult: ScanResult = connectable_scan_results[i]
-        log("BLE-Scanner: Connecting to {} ({}/{})".format(
+        log("BLE-Scanner > Connecting to {} ({}/{})".format(
             scanResult.device.addr_hex(), i + 1, len(connectable_scan_results)), log_type=1)
         newDeviceInfo: DeviceInfo = await connect_and_analyze(scanResult, connection_timeout_ms)
         _update_device_infos(collected_info, newDeviceInfo)
@@ -56,20 +56,20 @@ async def do_scan(active=True, scan_duration_ms=5000, connection_timeout_ms=3000
     utils.free()
     if (collected_info == None or len(collected_info) == 0):
         return None
-    log("BLE-Scanner: Scan finished.")
+    log("BLE-Scanner > Scan finished.")
     return list(collected_info.values())
 
 
 def post_analyze_adv(collected_info):
     if (len(collected_info) > 0 and any(device_info.descriptor for device_info in collected_info.values())):
-        log("Got following device info from adv data:")
+        log("BLE-Scanner > Got following device info from adv data:")
         _print_devices(collected_info, True)
     else:
-        log("No device info found in adv data.", log_type=0)
+        log("BLE-Scanner > No device info found in adv data.", log_type=0)
 
 
 def post_scan(scan_results):
-    log("BLE-Scanner: Found {} devices.".format(len(scan_results)))
+    log("BLE-Scanner > Found {} devices.".format(len(scan_results)))
     if (len(scan_results) > 0):
         assert len(scan_results) == len(set(scan_results))
     utils.free()
@@ -82,7 +82,7 @@ async def scan_and_collect_scan_results(active=True, scan_duration_ms=5000, filt
     async with aioble.scan(duration_ms=scan_duration_ms, interval_us=interval_us, window_us=window_us, active=active) as scanner:
         async for result in scanner:
             if (_filter_by_rssi(result.rssi, filter_rssi)):
-                log("BLE-Scanner: Ignored device with RSSI >" +
+                log("BLE-Scanner > Ignored device with RSSI >" +
                     str(filter_rssi).strip())
                 continue
             await _update_scan_results(scan_results_lock, scan_results, result)
@@ -177,22 +177,24 @@ async def connect_and_analyze(scanResult: ScanResult, connection_timeout_ms=5000
         # TODO: Retry after timeout?
         log("BLE-Scanner: Timeout while getting info for device: " +
             str(device.addr_hex()), log_type=0)
-    if (manufacturer != None or modelNumber != None):
-        deviceInfo.descriptor = manufacturer + " " + modelNumber
+    if (manufacturer != None):
+        deviceInfo.descriptor = manufacturer
+    if (modelNumber != None):
+        deviceInfo.descriptor += " " + modelNumber
     return deviceInfo
 
 
 async def _read_characteristic_as_utf8(characteristic: ClientCharacteristic, timeout_ms=2000) -> str:
     """Reads a characteristic and returns the data as string"""
     if (characteristic is None):
-        log("BLE-Scanner: Characteristic {} not found".format(
+        log("BLE-Scanner > Characteristic {} not found".format(
             str(characteristic)), log_type=0)
         return None
     try:
         data = await characteristic.read(timeout_ms)
         return data.decode('utf-8')
     except GattError as e:
-        log("BLE-Scanner: GattError during read: " + str(e), log_type=0)
+        log("BLE-Scanner > GattError during read: " + str(e), log_type=0)
         return None
 
 
