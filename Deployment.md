@@ -250,7 +250,7 @@ esptool.py --port /dev/tty.usbserial-0001 --baud 460800 write_flash --flash_size
 Refer to the [official documentation](https://docs.micropython.org/en/latest/esp8266/tutorial/intro.html#deploying-the-firmware) for more information.
 
 ## 3. Configure the project
-Open the `BLE Scanner` folder in your favorite editor and open the `config.py` file. Set the `SSID` and `NETWORK_KEY` to your local network's SSID and password. Set the `MQTT_BROKER_ADDRESS` to the IP of the machine running the MQTT broker (do not include the port, the default port 1883 will be used). Set the `MQTT_USER` and `MQTT_PASS` to the username and password you set up for the MQTT broker. Set the `MQTT_ROOM_NAME` to the name of the room the board will be placed in.
+Open the `BLE Scanner` folder in your favorite editor and open the `config.json` file. Set the `SSID` and `NETWORK_KEY` to your local network's SSID and password. Set the `MQTT_BROKER_ADDRESS` to the IP of the machine running the MQTT broker (do not include the port, the default port 1883 will be used). Set the `MQTT_USER` and `MQTT_PASS` to the username and password you set up for the MQTT broker. Set the `MQTT_ROOM_NAME` to the name of the room the board will be placed in. A full list of all the options can be found [here](README.md).
 
 ## 4. Upload the project to the board
 Depending on preferences Visual Studio Code or Thonny can be used to develop and upload the project to the board. If you fancy you could also use the comand line and vim ;)
