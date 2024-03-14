@@ -110,6 +110,8 @@ def update_config(newConfig):
         save()
         utils.log("Configuration updated: \n" + str(newConfig))
         utils.reboot()
+    else:
+        utils.log("MQTT > Current configuration is already up to date.")
 
 
 async def handle_config_update(update_config_queue: Queue):

@@ -5,6 +5,7 @@ import bluetooth
 from util import utils
 from util.utils import log
 from binascii import hexlify
+from asyncio import TimeoutError
 from aioble import GattError
 from aioble.device import Device
 from aioble.device import DeviceConnection
@@ -27,7 +28,7 @@ _manufacturer_specific_data = 0xFF
 
 
 async def do_scan(active=True, scan_duration_ms=5000, connection_timeout_ms=3000, filter_rssi=-90) -> list[DeviceInfo]:
-    log("BLE-Scanner > Starting Scan...")
+    log("BLE-Scanner > Starting Scan, scanning for " + str(scan_duration_ms) + "ms")
     scan_results: list[ScanResult] = await scan_and_collect_scan_results(active, scan_duration_ms, filter_rssi)
     post_scan(scan_results)
     # analyze adv data
@@ -162,21 +163,24 @@ async def connect_and_analyze(scanResult: ScanResult, connection_timeout_ms=5000
                 log("BLE-Scanner: Analyzing services", log_type=0)
                 # Read the model number string characteristic
                 modelChar = await deviceInfoService.characteristic(_modelNumberStringCharUUID)
-                modelNumber = await _read_characteristic_as_utf8(modelChar, connection_timeout_ms)
+                modelNumber = await _read_characteristic_as_utf8(modelChar)
                 # Read the manufacturer string characteristic
                 manufacturerChar = await deviceInfoService.characteristic(_manufacturerStringCharUUID)
-                manufacturer = await _read_characteristic_as_utf8(manufacturerChar, connection_timeout_ms)
+                manufacturer = await _read_characteristic_as_utf8(manufacturerChar)
                 # Disconnect from the device
                 await connection.disconnect()
-    except (OSError) as e:
-        log("BLE-Scanner: Exception while getting info for device: " +
+    except OSError as e:
+        log("BLE-Scanner: OSError while getting info for device: " +
             str(device.addr_hex()) + "\nError: " + str(e), log_type=2)
         if (connection is not None):
             await connection.disconnect()  # does not seem to disconnect properly
-    except asyncio.TimeoutError:
+    except TimeoutError:
         # TODO: Retry after timeout?
         log("BLE-Scanner: Timeout while getting info for device: " +
             str(device.addr_hex()), log_type=0)
+    except Exception as e:
+        log("BLE-Scanner: Exception while connecting to device: " +
+            str(device.addr_hex()) + "\nError type: "+ str(type(e)) + ", message: " + str(e), log_type=2)
     if (manufacturer != None):
         deviceInfo.descriptor = manufacturer
     if (modelNumber != None):
