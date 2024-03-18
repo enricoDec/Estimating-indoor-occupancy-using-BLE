@@ -84,7 +84,7 @@ def sub_cb(topic, msg):
 
 
 def send_data(uuid, device_infos: list[DeviceInfo]):
-    if device_infos is None or config.SEND_MQTT == False:
+    if device_infos is None or config.get(config.SEND_MQTT) == False:
         log("MQTT > No data send")
         return None
     utils.free()

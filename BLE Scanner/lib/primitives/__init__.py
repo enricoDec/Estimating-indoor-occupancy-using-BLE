@@ -37,25 +37,7 @@ def set_global_exception():
 
 
 _attrs = {
-    "AADC": "aadc",
-    "Barrier": "barrier",
-    "Condition": "condition",
-    "Delay_ms": "delay_ms",
-    "Encoder": "encoder",
-    "Pushbutton": "pushbutton",
-    "ESP32Touch": "pushbutton",
     "Queue": "queue",
-    "Semaphore": "semaphore",
-    "BoundedSemaphore": "semaphore",
-    "Switch": "switch",
-    "WaitAll": "events",
-    "WaitAny": "events",
-    "ELO": "events",
-    "ESwitch": "events",
-    "EButton": "events",
-    "RingbufQueue": "ringbuf_queue",
-    "Keyboard": "sw_array",
-    "SwArray": "sw_array",
 }
 
 # Copied from uasyncio.__init__.py

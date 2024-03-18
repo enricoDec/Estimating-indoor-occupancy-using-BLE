@@ -52,6 +52,7 @@ def set_global_exception():
     def handle_exception(loop, context):
         import sys
         exception = context.get('exception')
+        log("Exception in loop: " + str(loop) + " " + str(exception), log_type=3)
         if exception:
             sys.print_exception(exception)
             # TODO: When deploying, reboot on exception
