@@ -92,7 +92,7 @@ def send_data(uuid, device_infos: list[DeviceInfo]):
     for i in range(0, len(device_infos), 10):
         current_part = int(i/10) + 1  # starts at 1
         data = {
-            'timestamp_utc': utils.get_timestamp(),
+            'timestamp_utc': utils.get_timestamp_epoch(),
             'scanresult': [device_info.__dict__ for device_info in device_infos[i:i+10]],
             'uuid': str(uuid),
             'room': utils.get_room(),

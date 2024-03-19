@@ -63,7 +63,7 @@ def set_global_exception():
 
 async def main():
     log("Free Mem: " + utils.df())
-    log("Time: " + utils.get_timestamp())
+    log("Time: " + utils.get_timestamp_formatted())
     set_global_exception()  # Debug aid
     tasks = []
     update_config_queue = None

@@ -1,24 +1,18 @@
 import json
 import sys
 
-
 def rule_based_classification(descriptor, knownSmartphones):
     for knownSmartphone in knownSmartphones:
-        if (knownSmartphone.lower().replace(" ", "") in descriptor.lower().replace(" ", "")):
+        if knownSmartphone.lower().replace(" ", "") in descriptor.lower().replace(" ", ""):
             return True
+    return False
 
 def appendUnknownDeviceIfNotAlreadyIn(unknownDevices, descriptor):
-    alreadyIn = False
-    for unknownDevice in unknownDevices:
-        if (unknownDevice == descriptor):
-            alreadyIn = True
-            break
-    if (alreadyIn == False):
+    if descriptor not in unknownDevices:
         unknownDevices.append(descriptor)
 
-
 inputFile = sys.argv[1]
-if (inputFile == None):
+if not inputFile:
     print("No input file specified")
     exit(1)
 
@@ -31,19 +25,20 @@ with open("smartphones.json", "r") as file:
 with open("unknownDevices.json", "r") as file:
     unknownDevices = json.load(file)
 
-counter = 0
-for result in json_data["scanresult"]:
+time_counts = []
+
+for result in json_data["descriptors"]:
     descriptor = result["descriptor"]
-    if (descriptor is not None and rule_based_classification(descriptor, knownSmartphones)):
-        counter += 1
-    else :
+    time = result["time"]
+    if descriptor and rule_based_classification(descriptor, knownSmartphones):
+        time_counts.append({"time": time, "count": 1})
+    else:
         appendUnknownDeviceIfNotAlreadyIn(unknownDevices, descriptor)
 
 with open("unknownDevices.json", "w") as file:
     json.dump(unknownDevices, file)
 
-# append smartphones to the json_data
-json_data["smartphones"] = counter
-
+# Append smartphones to the json_data
+json_data["smartphones"] = time_counts
 
 print(json.dumps(json_data))

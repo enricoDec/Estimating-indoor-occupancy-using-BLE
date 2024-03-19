@@ -53,7 +53,7 @@ def current_time():
     return c_time
 
 
-def get_timestamp():
+def get_timestamp_formatted():
     global synced
     if (synced == False):
         if (wifiManager.isConnected()):
@@ -61,6 +61,14 @@ def get_timestamp():
             synced = True
     date_and_time = current_date() + " " + current_time()
     return date_and_time
+
+def get_timestamp_epoch():
+    global synced
+    if (synced == False):
+        if (wifiManager.isConnected()):
+            ntptime.settime()
+            synced = True
+    return time.time()
 
 
 def generate_uuid():
