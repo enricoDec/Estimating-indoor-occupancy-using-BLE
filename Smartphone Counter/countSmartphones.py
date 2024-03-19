@@ -25,13 +25,15 @@ with open("smartphones.json", "r") as file:
 with open("unknownDevices.json", "r") as file:
     unknownDevices = json.load(file)
 
-time_counts = []
+time_counts = {}
 
 for result in json_data["descriptors"]:
     descriptor = result["descriptor"]
     time = result["time"]
     if descriptor and rule_based_classification(descriptor, knownSmartphones):
-        time_counts.append({"time": time, "count": 1})
+        if time not in time_counts:
+            time_counts[time] = 0
+        time_counts[time] += 1
     else:
         appendUnknownDeviceIfNotAlreadyIn(unknownDevices, descriptor)
 
