@@ -40,7 +40,7 @@ for result in json_data["descriptors"]:
 with open("unknownDevices.json", "w") as file:
     json.dump(unknownDevices, file)
 
-# Append smartphones to the json_data
-json_data["smartphones"] = time_counts
+sorted_time_counts = sorted(time_counts.items(), key=lambda x: x[0])
+json_data["smartphones"] = dict(sorted_time_counts)
 
 print(json.dumps(json_data))
