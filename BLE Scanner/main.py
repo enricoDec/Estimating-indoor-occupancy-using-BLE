@@ -34,7 +34,6 @@ async def scan_on_trigger(trigger_queue: Queue, update_config_queue: Queue):
             scanUUID = utils.generate_uuid()
             log("MQTT > Scan(s) queued " + str(trigger_queue.qsize()))
             await trigger_queue.get()
-            log("MQTT > Scan Triggered!")
             device_infos = await bleScanner.do_scan(
                 config.get(config.ACTIVE_SCAN),
                 config.get(config.SCAN_DURATION_MS),
@@ -62,8 +61,8 @@ def set_global_exception():
 
 
 async def main():
-    log("Free Mem: " + utils.df())
-    log("Time: " + utils.get_timestamp_formatted())
+    log("System > Free Mem: " + utils.df())
+    log("System > Time: " + utils.get_timestamp_formatted())
     set_global_exception()  # Debug aid
     tasks = []
     update_config_queue = None

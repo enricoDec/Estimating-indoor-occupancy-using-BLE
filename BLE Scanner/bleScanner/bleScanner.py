@@ -44,14 +44,15 @@ async def do_scan(active=True, scan_duration_ms=5000, connection_timeout_ms=3000
     # Connect to devices and get more info
     connectable_scan_results = _get_connectable_scan_results_with_no_descriptor(
         scan_results, collected_info)
-    for i in range(len(connectable_scan_results)):
-        scanResult: ScanResult = connectable_scan_results[i]
-        log("BLE-Scanner > Connecting to {} ({}/{})".format(
-            scanResult.device.addr_hex(), i + 1, len(connectable_scan_results)), log_type=1)
-        newDeviceInfo: DeviceInfo = await connect_and_analyze(scanResult, connection_timeout_ms)
-        _update_device_infos(collected_info, newDeviceInfo)
-        utils.free()
-        asyncio.sleep_ms(100)
+    if (connectable_scan_results != None and len(connectable_scan_results) > 0):
+        for i in range(len(connectable_scan_results)):
+            scanResult: ScanResult = connectable_scan_results[i]
+            log("BLE-Scanner > Connecting to {} ({}/{})".format(
+                str(scanResult.device.addr_hex()), i + 1, len(connectable_scan_results)), log_type=1)
+            newDeviceInfo: DeviceInfo = await connect_and_analyze(scanResult, connection_timeout_ms)
+            _update_device_infos(collected_info, newDeviceInfo)
+            utils.free()
+            asyncio.sleep_ms(100)
     _print_devices(collected_info)
     scan_results.clear()
     utils.free()
@@ -154,7 +155,7 @@ async def connect_and_analyze(scanResult: ScanResult, connection_timeout_ms=5000
     try:
         connection: DeviceConnection = await device.connect(timeout_ms=connection_timeout_ms)
         deviceInfo.connSuccessful = True
-        log("BLE-Scanner: Connected to " + device.addr_hex(), log_type=0)
+        log("BLE-Scanner: Connected to " + str(device.addr_hex()), log_type=0)
         async with connection:
             deviceInfoService = await connection.service(_deviceInfoServiceUUID, timeout_ms=connection_timeout_ms)
             if deviceInfoService is None:

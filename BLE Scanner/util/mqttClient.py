@@ -39,10 +39,12 @@ def MQTTConnect():
     mqttc.connect()
     mqttc.set_last_will(SCAN_TOPIC.encode(), "Offline", retain=True)
     log("MQTT > Connected to Broker!")
-    mqttc.subscribe(TRIGGER_TOPIC.encode())
-    if config.ALLOW_CONFIG_UPDATE:
+    if config.get(config.TIME_BETWEEN_SCANS_MS) == -1:
+        mqttc.subscribe(TRIGGER_TOPIC.encode())
+        log("MQTT > Subscribed to: " + TRIGGER_TOPIC)
+    if config.get(config.ALLOW_CONFIG_UPDATE):
         mqttc.subscribe(UPDATE_TOPIC.encode())
-    log("MQTT > Subscribed to: " + TRIGGER_TOPIC)
+        log("MQTT > Subscribed to: " + UPDATE_TOPIC)
     utils.free()
 
 
@@ -71,11 +73,11 @@ def sub_cb(topic, msg):
             msgJSon = ujson.loads(msg)
             # trigger scan
             if (topic == TRIGGER_TOPIC):
-                scansonTrigger = config.get(config.TIME_BETWEEN_SCANS_MS) != -1
-                if (scansonTrigger and "all" in msgJSon["room"] or utils.get_room() in msgJSon["room"]):
+                scanOnTrigger = config.get(config.TIME_BETWEEN_SCANS_MS) == -1
+                if (scanOnTrigger and ("all" in msgJSon["room"] or utils.get_room() in msgJSon["room"])):
                     topic_subscribers[topic].put_nowait(msgJSon)
             # update config
-            elif (topic == UPDATE_TOPIC and config.ALLOW_CONFIG_UPDATE):
+            elif (topic == UPDATE_TOPIC and config.get(config.ALLOW_CONFIG_UPDATE)):
                 topic_subscribers[topic].put_nowait(msgJSon)
         except QueueFull:
             log("MQTT > " + str(topic) + " Queue is full, dropping message")
