@@ -133,7 +133,7 @@ Start the InfluxDB service (detached):
 docker compose up -d
 ```
 The service should be available at: http://localhost:8086
-Access the web interface in your browser and follow the setup guide. Be sure to write down the organization and the token (a new token can also be created later). Note when you copy the token in my experience the **copy to clipboard** button does not work correctly (copy&past manually). Go to Buckets and create a new one called `BLE_SCANS`.
+Access the web interface in your browser and follow the setup guide. NodeRed is configured to use `HTW` as organization, but can be manually changed if prefered. Be sure to write down the organization and the token (a new token can also be created later). Note when you copy the token in my experience the **copy to clipboard** button does not work correctly (copy&past manually). Go to Buckets and create a new one called `BLE_SCANS`.
 
 ## 1.6 Node-Red Stack
 Change to the Node-Red deployment directory:
@@ -188,14 +188,14 @@ node-red admin login
 ```
 Install the modules:
 ```bash
-node-red admin install node-red-contrib-data-table-viewer
+node-red admin install node-red-dashboard
 node-red admin install node-red-contrib-influxdb
 ```
 ### (Option 2): Using the Node-Red UI
 Open the Node-Red UI in a browser (e.g., http://localhost:1880).
 
 `Manage Palette` -> `Install`:
-- node-red-contrib-data-table-viewer
+- node-red-dashboard
 - node-red-contrib-influxdb
 
 ## 2.b Import the flow:

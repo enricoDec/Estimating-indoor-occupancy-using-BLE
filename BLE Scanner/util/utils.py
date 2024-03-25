@@ -1,14 +1,12 @@
-from util import wifiManager
-import config
 import gc
 import os
 import ntptime
 import time
+import network
+import asyncio as asyncio
 import machine
-import uasyncio as asyncio
 
 
-ntptime.host = config.get(config.NTP_HOST)
 synced = False
 
 
@@ -32,6 +30,7 @@ def free(full=False):
 
 def log(text: str, newLine=True, log_type=1):
     # 0: Debug, 1: Info, 2: Warning, 3: Error
+    import config
     if config.get(config.LOGGING) and log_type >= config.get(config.LOG_LEVEL):
         print(str(text).strip(), end='\n' if newLine else '')
 
@@ -55,8 +54,10 @@ def current_time():
 
 def get_timestamp_formatted():
     global synced
+    import config
     if (synced == False):
-        if (wifiManager.isConnected()):
+        if (network.WLAN(network.STA_IF).isconnected()):
+            ntptime.host = config.get(config.NTP_HOST)
             ntptime.settime()
             synced = True
     date_and_time = current_date() + " " + current_time()
@@ -64,8 +65,10 @@ def get_timestamp_formatted():
 
 def get_timestamp_epoch():
     global synced
+    import config
     if (synced == False):
-        if (wifiManager.isConnected()):
+        if (network.WLAN(network.STA_IF).isconnected()):
+            ntptime.host = config.get(config.NTP_HOST)
             ntptime.settime()
             synced = True
     return time.time()
@@ -76,6 +79,7 @@ def generate_uuid():
 
 
 def get_room():
+    import config
     room_name = config.get(config.MQTT_ROOM_NAME)
     if (room_name == "doScan"):
         raise ValueError("Room name 'doScan' is not allowed")

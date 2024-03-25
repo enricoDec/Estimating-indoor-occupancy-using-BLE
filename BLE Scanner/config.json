@@ -1,5 +1,4 @@
 {
-    "NET": true,
     "MQTT": true,
     "SEND_MQTT": true,
     "ALLOW_CONFIG_UPDATE": true,
@@ -13,7 +12,7 @@
     "MQTT_PASSWORD": "TODO_CHANGE_ME",
     "MQTT_ROOM_NAME": "myRoom",
     "MQTT_BASE_TOPIC": "roomUtilization/",
-    "TIME_BETWEEN_SCANS_MS": 30000,
+    "TIME_BETWEEN_SCANS_MS": -1,
     "SCAN_DURATION_MS": 10000,
     "SCAN_CONNECTION_TIMEOUT_MS": 5000,
     "ACTIVE_SCAN": true,

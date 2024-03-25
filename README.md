@@ -132,7 +132,7 @@ The trigger for initiating scans is published to the topic roomUtilization/doSca
             "connectable": false,
             "connSuccessful": false,
             "descriptor": null,
-            "manufacturerCode": 76
+            "manufacturerCode": 35
         },
         {
             "connAttempts": 1,
@@ -165,7 +165,6 @@ Here's the markdown table documenting all the options in the configuration:
 
 | Option                     | Description                                                                | Default Value                              |
 | -------------------------- | -------------------------------------------------------------------------- | ------------------------------------------ |
-| NET                        | Connect to WiFi on Startup                                                 | true                                       |
 | MQTT                       | Use MQTT. If set to False, ALLOW_CONFIG_UPDATE and SEND_MQTT will be false | true                                       |
 | SEND_MQTT                  | Transfer Scan Data via MQTT after Scan                                     | true                                       |
 | ALLOW_CONFIG_UPDATE        | Allow updating configuration via MQTT                                      | true                                       |
@@ -189,7 +188,6 @@ Furthermore these settings can be updated directly on the device via MQTT. By de
 
 ```json
 {
-    "NET": true,
     "MQTT": true,
     "SEND_MQTT": true,
     "ALLOW_CONFIG_UPDATE": true,

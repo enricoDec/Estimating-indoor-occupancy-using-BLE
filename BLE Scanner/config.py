@@ -1,9 +1,8 @@
 import ujson as json
 from micropython import const
 from primitives import Queue
-from util import utils
+from util.utils import log, reboot
 
-NET = const("NET")
 MQTT = const("MQTT")
 SEND_MQTT = const("SEND_MQTT")
 ALLOW_CONFIG_UPDATE = const("ALLOW_CONFIG_UPDATE")
@@ -24,8 +23,6 @@ ACTIVE_SCAN = const("ACTIVE_SCAN")
 FILTER_RSSI = const("FILTER_RSSI")
 
 config = {
-    # True = Connect to WiFi on Startup
-    NET: True,
     # True = Use MQTT. If set to False ALLOW_CONFIG_UPDATE and SEND_MQTT will be set to False
     MQTT: True,
     # True = Transfers Scands Data via MQTT after Scan
@@ -74,8 +71,8 @@ def get(flag):
         flag = config[flag]
         return flag
     except Exception:
-        utils.log("Config > Config flag not found: " +
-                  str(flag) + "\n Config is malformed!", 3)
+        log("Config > Config flag not found: " +
+            str(flag) + "\n Config is malformed!", 3)
         return None
 
 
@@ -86,11 +83,11 @@ def load(config_file=config_file):
         with open(config_file, "r") as json_file:
             newConfig = _validate_and_update_config(json.load(json_file))
             if (newConfig == None):
-                utils.log("Config > Critical error, config invalid!", 3)
+                log("Config > Critical error, config invalid!", 3)
                 return
             config = newConfig
     except Exception:
-        utils.log("Config > Critical error, no config file found!", 3)
+        log("Config > Critical error, no config file found!", 3)
 
 
 def save(config_file=config_file):
@@ -103,15 +100,15 @@ def update_config(newConfig):
     global config
     newConfig = _validate_and_update_config(newConfig)
     if (newConfig == None):
-        utils.log("MQTT > Invalid config. Ignoring...", 3)
+        log("MQTT > Invalid config. Ignoring...", 3)
         return
     if (config != newConfig):
         config = newConfig
         save()
-        utils.log("Configuration updated: \n" + str(newConfig))
-        utils.reboot()
+        log("Configuration updated: \n" + str(newConfig))
+        reboot()
     else:
-        utils.log("MQTT > Current configuration is already up to date.")
+        log("MQTT > Current configuration is already up to date.")
 
 
 async def handle_config_update(update_config_queue: Queue):
@@ -121,7 +118,7 @@ async def handle_config_update(update_config_queue: Queue):
         while (not update_config_queue.empty()):
             # no race condition, as only one task gets the message
             lastConfig = await update_config_queue.get()
-        utils.log("MQTT > Updating config...")
+        log("MQTT > Updating config...")
         update_config(lastConfig)
 
 
@@ -134,26 +131,23 @@ def _validate_and_update_config(config_to_validate):
             config_to_validate[key] = config[key]
         # check if the type is the same, if not discard the new config (malformed config file)
         elif (config_to_validate[key] != None and type(config_to_validate[key]) != type(config[key])):
-            utils.log("Config > Malformed config file, " + str(key) +
-                      " has the wrong type!", 3)
+            log("Config > Malformed config file, " + str(key) +
+                " has the wrong type!", 3)
             return None
     for key in config_to_validate:
         # if new config has keys not present in the current config, discard the new config (malformed config file)
         if key not in config:
-            utils.log("Config > Malformed config file, " + str(key) +
-                      " is not a valid config flag!", 3)
+            log("Config > Malformed config file, " + str(key) +
+                " is not a valid config flag!", 3)
             return None
     adjust_config(config_to_validate)
     return config_to_validate
 
 
 def adjust_config(config):
-    # If NET is disabled, MQTT should be disabled as well
-    if (config[NET] == False):
-        config[MQTT] = False
     # If MQTT is disabled, ALLOW_CONFIG_UPDATE and SEND_MQTT should be disabled as well
     if (config[MQTT] == False):
-        utils.log(
-            "Config > NET and or MQTT is disabled. Disabling ALLOW_CONFIG_UPDATE and SEND_MQTT", 2)
+        log(
+            "Config > MQTT is disabled. Disabling ALLOW_CONFIG_UPDATE and SEND_MQTT", 2)
         config[ALLOW_CONFIG_UPDATE] = False
         config[SEND_MQTT] = False

@@ -30,6 +30,7 @@ time_counts = {}
 for result in json_data["descriptors"]:
     descriptor = result["descriptor"]
     time = result["time"]
+    time = time // 1000 * 1000 # group by minute
     if descriptor and rule_based_classification(descriptor, knownSmartphones):
         if time not in time_counts:
             time_counts[time] = 0
