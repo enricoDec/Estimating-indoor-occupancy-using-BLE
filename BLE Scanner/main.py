@@ -68,7 +68,7 @@ async def main():
             log("Connection failed.")
             utils.reboot()
     log("System > Free Mem: " + utils.df())
-    log("System > Time: " + utils.get_timestamp_formatted())
+    log("System > Time: " + utils.get_datetime_formatted() + " UTC")
     tasks = []
     update_config_queue = None
     if (config.get(config.ALLOW_CONFIG_UPDATE)):

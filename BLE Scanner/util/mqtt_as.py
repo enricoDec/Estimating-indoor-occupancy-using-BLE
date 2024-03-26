@@ -274,7 +274,7 @@ class MQTT_base:
             if e.args[0] not in BUSY_ERRORS:
                 raise
         await asyncio.sleep_ms(_DEFAULT_MS)
-        self.dprint("Connecting to broker.")
+        self.dprint("MQTT > Connecting to broker.")
         if self._ssl:
             import ussl
 
@@ -313,7 +313,7 @@ class MQTT_base:
         # Await CONNACK
         # read causes ECONNABORTED if broker is out; triggers a reconnect.
         resp = await self._as_read(4)
-        self.dprint("Connected to broker.")  # Got CONNACK
+        self.dprint("MQTT > Connected to broker.")  # Got CONNACK
         if resp[3] != 0 or resp[0] != 0x20 or resp[1] != 0x02:
             # Bad CONNACK e.g. authentication fail.
             raise OSError(
@@ -386,7 +386,7 @@ class MQTT_base:
         try:
             self._sta_if.disconnect()  # Disconnect Wi-Fi to avoid errors
         except OSError:
-            self.dprint("Wi-Fi not started, unable to disconnect interface")
+            self.dprint("MQTT > Wi-Fi not started, unable to disconnect interface")
         self._sta_if.active(False)
 
     async def _await_pid(self, pid):
@@ -622,12 +622,12 @@ class MQTTClient(MQTT_base):
             raise OSError("Wi-Fi connect timed out")
         if not quick:  # Skip on first connection only if power saving
             # Ensure connection stays up for a few secs.
-            self.dprint("Checking WiFi integrity.")
+            self.dprint("MQTT > Checking WiFi integrity.")
             for _ in range(5):
                 if not s.isconnected():
                     raise OSError("Connection Unstable")  # in 1st 5 secs
                 await asyncio.sleep(1)
-            self.dprint("Got reliable connection")
+            self.dprint("MQTT > Got reliable connection")
 
     async def connect(self, *, quick=False):  # Quick initial connect option for battery apps
         if not self._has_connected:
@@ -646,9 +646,9 @@ class MQTTClient(MQTT_base):
                         self._sock.write(b"\xe0\0")  # Force disconnect but keep socket open
                 except OSError:
                     pass
-                self.dprint("Waiting for disconnect")
+                self.dprint("MQTT > Waiting for disconnect")
                 await asyncio.sleep(2)  # Wait for broker to disconnect
-                self.dprint("About to reconnect with unclean session.")
+                self.dprint("MQTT > About to reconnect with unclean session.")
             await self._connect(self._clean)
         except Exception:
             self._close()
@@ -693,7 +693,7 @@ class MQTTClient(MQTT_base):
         while self.isconnected():
             pings_due = ticks_diff(ticks_ms(), self.last_rx) // self._ping_interval
             if pings_due >= 4:
-                self.dprint("Reconnect: broker fail.")
+                self.dprint("MQTT > Reconnect: broker fail.")
                 break
             await asyncio.sleep_ms(self._ping_interval)
             try:
@@ -715,7 +715,6 @@ class MQTTClient(MQTT_base):
         while True:
             await asyncio.sleep(20)
             gc.collect()
-            self.dprint("RAM free %d alloc %d", gc.mem_free(), gc.mem_alloc())
 
     def isconnected(self):
         if self._in_connect:  # Disable low-level check during .connect()
@@ -749,21 +748,21 @@ class MQTTClient(MQTT_base):
                 try:
                     self._sta_if.disconnect()
                 except OSError:
-                    self.dprint("Wi-Fi not started, unable to disconnect interface")
+                    self.dprint("MQTT > Wi-Fi not started, unable to disconnect interface")
                 await asyncio.sleep(1)
                 try:
                     await self.wifi_connect()
                 except OSError:
                     continue
                 if not self._has_connected:  # User has issued the terminal .disconnect()
-                    self.dprint("Disconnected, exiting _keep_connected")
+                    self.dprint("MQTT > Disconnected, exiting _keep_connected")
                     break
                 try:
                     await self.connect()
                     # Now has set ._isconnected and scheduled _connect_handler().
-                    self.dprint("Reconnect OK!")
+                    self.dprint("MQTT > Reconnect OK!")
                 except OSError as e:
-                    self.dprint("Error in reconnect. %s", e)
+                    self.dprint("MQTT > Error in reconnect. %s", e)
                     # Can get ECONNABORTED or -1. The latter signifies no or bad CONNACK received.
                     self._close()  # Disconnect and try again.
                     self._in_connect = False

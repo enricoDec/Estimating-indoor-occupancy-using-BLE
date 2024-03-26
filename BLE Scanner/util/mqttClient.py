@@ -1,12 +1,15 @@
 from bleScanner.deviceInfo import DeviceInfo
-from util.mqtt_as import MQTTClient, config as mqtt_config
+from util.mqtt_as import MQTTClient as _MQTTClient, config as mqtt_config
 from util import utils
 from util.utils import log
 from primitives import Queue
 from primitives.queue import QueueFull
 from asyncio import Lock
+import uasyncio as asyncio
+import time
 import ujson
 import config
+
 
 SCAN_TOPIC = config.get(config.MQTT_BASE_TOPIC) + "scans/" + utils.get_room()
 TRIGGER_TOPIC = config.get(config.MQTT_BASE_TOPIC) + "doScan"
@@ -30,10 +33,10 @@ async def connect():
     mqtt_config["queue_len"] = 1
     mqtt_config['keepalive'] = 120
     mqtt_client = MQTTClient(mqtt_config)
+    mqtt_client.DEBUG = True
     log("MQTT > Broker Address: " + str(BROKER_ADDR))
     log("MQTT > Scan result will be published to: " + SCAN_TOPIC)
     await mqtt_client.connect()
-    log("MQTT > Connected to Broker!")
     utils.free()
 
 
@@ -90,10 +93,11 @@ async def send_data(uuid, device_infos: list[DeviceInfo]):
         return None
     utils.free()
     total_parts = (len(device_infos) + 9) // 10  # ceil(len(device_infos) / 10)
+    timestamp_utc = utils.get_timestamp_epoch()
     for i in range(0, len(device_infos), 10):
         current_part = int(i/10) + 1  # starts at 1
         data = {
-            'timestamp_utc': utils.get_timestamp_epoch(),
+            'timestamp_utc': timestamp_utc,
             'scanresult': [device_info.__dict__ for device_info in device_infos[i:i+10]],
             'uuid': str(uuid),
             'room': utils.get_room(),
@@ -101,9 +105,13 @@ async def send_data(uuid, device_infos: list[DeviceInfo]):
             'totalParts': total_parts
         }
         data = ujson.dumps(data)
-        log("MQTT > Sending Data Part ({}/{}) to {}".format(current_part,
-            total_parts, SCAN_TOPIC))
-        await mqtt_client.publish(SCAN_TOPIC, data.encode(), qos=1)
+        timeout = await mqtt_client.publish(SCAN_TOPIC, data, qos=1, timeout=config.get(config.MQTT_SEND_TIMEOUT_MS))
+        if timeout:
+            log("MQTT > Timeout while sending Part ({}/{}) to {}".format(current_part,
+                                                                         total_parts, SCAN_TOPIC))
+        else:
+            log("MQTT > Sent Data Part ({}/{}) to {}".format(current_part,
+                                                             total_parts, SCAN_TOPIC))
         utils.free()
 
 
@@ -114,3 +122,40 @@ def close():
         mqtt_client = None
         log("MQTT > Disconnected from Broker")
     utils.free()
+
+
+# (C) Copyright 2019 Kevin Köck.
+# Released under the MIT licence.
+class MQTTClient(_MQTTClient):
+    _pub_task = None
+
+    # Await broker connection. Subclassed to reduce canceling time from 1s to 50ms
+    async def _connection(self):
+        while not self._isconnected:
+            await asyncio.sleep_ms(50)
+
+    async def _publishTimeout(self, topic, msg, retain, qos):
+        try:
+            await super().publish(topic, msg, retain, qos)
+        finally:
+            self._pub_task = None
+
+    async def publish(self, topic, msg, retain=False, qos=0, timeout=None):
+        task = None
+        start = time.ticks_ms()
+        while timeout is None or time.ticks_diff(time.ticks_ms(), start) < timeout:
+            # Can't use wait_for because cancelling a wait_for would cancel _publishTimeout
+            # Also a timeout in wait_for would cancel _publishTimeout without waiting for
+            # the socket lock to be available, breaking mqtt protocol.
+            if self._pub_task is None and task is None:
+                task = asyncio.create_task(
+                    self._publishTimeout(topic, msg, retain, qos))
+                self._pub_task = task
+            elif task is not None:
+                if self._pub_task != task:
+                    return False  # published
+            await asyncio.sleep_ms(20)
+        if task is not None:
+            async with self.lock:
+                task.cancel()
+                return True

@@ -5,40 +5,31 @@ from util.utils import log, reboot
 
 MQTT = const("MQTT")
 SEND_MQTT = const("SEND_MQTT")
-ALLOW_CONFIG_UPDATE = const("ALLOW_CONFIG_UPDATE")
-LOGGING = const("LOGGING")
-LOG_LEVEL = const("LOG_LEVEL")
-NTP_HOST = const("NTP_HOST")
-SSID = const("SSID")
-NETWORK_KEY = const("NETWORK_KEY")
+MQTT_SEND_TIMEOUT_MS = const("MQTT_SEND_TIMEOUT_MS")
 MQTT_BROKER_ADDRESS = const("MQTT_BROKER_ADDRESS")
 MQTT_USER = const("MQTT_USER")
 MQTT_PASSWORD = const("MQTT_PASSWORD")
 MQTT_ROOM_NAME = const("MQTT_ROOM_NAME")
 MQTT_BASE_TOPIC = const("MQTT_BASE_TOPIC")
+SSID = const("SSID")
+NETWORK_KEY = const("NETWORK_KEY")
+ALLOW_CONFIG_UPDATE = const("ALLOW_CONFIG_UPDATE")
 TIME_BETWEEN_SCANS_MS = const("TIME_BETWEEN_SCANS_MS")
 SCAN_DURATION_MS = const("SCAN_DURATION_MS")
 SCAN_CONNECTION_TIMEOUT_MS = const("SCAN_CONNECTION_TIMEOUT_MS")
 ACTIVE_SCAN = const("ACTIVE_SCAN")
 FILTER_RSSI = const("FILTER_RSSI")
+LOGGING = const("LOGGING")
+LOG_LEVEL = const("LOG_LEVEL")
+NTP_HOST = const("NTP_HOST")
 
 config = {
     # True = Use MQTT. If set to False ALLOW_CONFIG_UPDATE and SEND_MQTT will be set to False
     MQTT: True,
     # True = Transfers Scands Data via MQTT after Scan
     SEND_MQTT: True,
-    # Allow to update the configuration via MQTT
-    ALLOW_CONFIG_UPDATE: True,
-    # True = Prints Scanning Process, Results and other events
-    LOGGING: True,
-    # Log Level (0 = Debug (Includes info and more), 1 = Info, 2 = Warning, 3 = Error)
-    LOG_LEVEL: 1,
-    # NTP Server to use for time synchronization
-    NTP_HOST: "pool.ntp.org",
-    # WiFi SSID
-    SSID: "FunnyWifiName",
-    # WiFi Password
-    NETWORK_KEY: "DefaultRouterPasswordThatYouShouldChange",
+    # Timeout in ms for sending data via MQTT
+    MQTT_SEND_TIMEOUT_MS: 5000,
     # MQTT Broker Address
     MQTT_BROKER_ADDRESS: "localhost",
     # MQTT User set to None if no user is needed (anonymous access)
@@ -50,6 +41,12 @@ config = {
     # doScan not allowed as room name (reserved for scan trigger)
     MQTT_ROOM_NAME: "myRoom",
     MQTT_BASE_TOPIC: "roomUtilization/",
+    # WiFi SSID
+    SSID: "FunnyWifiName",
+    # WiFi Password
+    NETWORK_KEY: "DefaultRouterPasswordThatYouShouldChange",
+    # Allow to update the configuration via MQTT
+    ALLOW_CONFIG_UPDATE: True,
     # Time in sec between each scan (Default 30000ms = 30s). Set TIME_BETWEEN_SCANS_MS to -1 if scan should be triggered via MQTT
     TIME_BETWEEN_SCANS_MS: 30000,
     # The actual duration of the scan in ms (would suggest at least 5000ms).
@@ -59,7 +56,13 @@ config = {
     # True = Active Scan | False = Passive Scan (Only listens for advertising packets sent by BLE devices, uses less power)
     ACTIVE_SCAN: True,
     # Only Include Devices with a higher RSSI (0 for no filter)
-    FILTER_RSSI: -100
+    FILTER_RSSI: -100,
+    # True = Prints Scanning Process, Results and other events
+    LOGGING: True,
+    # Log Level (0 = Debug (Includes info and more), 1 = Info, 2 = Warning, 3 = Error)
+    LOG_LEVEL: 1,
+    # NTP Server to use for time synchronization
+    NTP_HOST: "pool.ntp.org",
 }
 
 config_file = "config.json"

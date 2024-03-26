@@ -52,7 +52,7 @@ def current_time():
     return c_time
 
 
-def get_timestamp_formatted():
+def get_datetime_formatted():
     global synced
     import config
     if (synced == False):
@@ -71,7 +71,7 @@ def get_timestamp_epoch():
             ntptime.host = config.get(config.NTP_HOST)
             ntptime.settime()
             synced = True
-    return time.time()
+    return (time.time() + 946684800) * 1000 # 2000-01-01 00:00:00 + seconds to millis epoch
 
 
 def generate_uuid():
@@ -87,5 +87,9 @@ def get_room():
 
 def reboot():
     log("Rebooting...\n", 2)
+    import util.mqttClient
+    util.mqttClient.close()
     asyncio.new_event_loop()  # Clear retained state
+    import time
+    time.sleep(5)
     machine.reset()

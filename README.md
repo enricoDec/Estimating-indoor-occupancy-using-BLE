@@ -167,6 +167,7 @@ Here's the markdown table documenting all the options in the configuration:
 | -------------------------- | -------------------------------------------------------------------------- | ------------------------------------------ |
 | MQTT                       | Use MQTT. If set to False, ALLOW_CONFIG_UPDATE and SEND_MQTT will be false | true                                       |
 | SEND_MQTT                  | Transfer Scan Data via MQTT after Scan                                     | true                                       |
+| MQTT_SEND_TIMEOUT_MS       | Timeout in milliseconds for sending MQTT messages                          | 5000                                       |
 | ALLOW_CONFIG_UPDATE        | Allow updating configuration via MQTT                                      | true                                       |
 | LOGGING                    | Print Scanning Process, Results, and other events                          | true                                       |
 | LOG_LEVEL                  | Log Level (0 = Debug, 1 = Info, 2 = Warning, 3 = Error)                    | 1                                          |
@@ -190,22 +191,23 @@ Furthermore these settings can be updated directly on the device via MQTT. By de
 {
     "MQTT": true,
     "SEND_MQTT": true,
-    "ALLOW_CONFIG_UPDATE": true,
-    "LOGGING": true,
-    "LOG_LEVEL": 1,
-    "NTP_HOST": "pool.ntp.org",
-    "SSID": "TODO_CHANGE_ME",
-    "NETWORK_KEY": "TODO_CHANGE_ME",
+    "MQTT_SEND_TIMEOUT_MS": "5000",
     "MQTT_BROKER_ADDRESS": "TODO_CHANGE_ME",
     "MQTT_USER": "TODO_CHANGE_ME",
     "MQTT_PASSWORD": "TODO_CHANGE_ME",
     "MQTT_ROOM_NAME": "myRoom",
     "MQTT_BASE_TOPIC": "roomUtilization/",
-    "TIME_BETWEEN_SCANS_MS": 30000,
+    "SSID": "TODO_CHANGE_ME",
+    "NETWORK_KEY": "TODO_CHANGE_ME",
+    "ALLOW_CONFIG_UPDATE": true,
+    "TIME_BETWEEN_SCANS_MS": -1,
     "SCAN_DURATION_MS": 10000,
     "SCAN_CONNECTION_TIMEOUT_MS": 5000,
     "ACTIVE_SCAN": true,
-    "FILTER_RSSI": -100
+    "FILTER_RSSI": -100,
+    "LOGGING": true,
+    "LOG_LEVEL": 1,
+    "NTP_HOST": "pool.ntp.org"
 }
 ```
 

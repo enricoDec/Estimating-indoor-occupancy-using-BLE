@@ -1,20 +1,21 @@
 {
     "MQTT": true,
     "SEND_MQTT": true,
-    "ALLOW_CONFIG_UPDATE": true,
-    "LOGGING": true,
-    "LOG_LEVEL": 1,
-    "NTP_HOST": "pool.ntp.org",
-    "SSID": "TODO_CHANGE_ME",
-    "NETWORK_KEY": "TODO_CHANGE_ME",
+    "MQTT_SEND_TIMEOUT_MS": "5000",
     "MQTT_BROKER_ADDRESS": "TODO_CHANGE_ME",
     "MQTT_USER": "TODO_CHANGE_ME",
     "MQTT_PASSWORD": "TODO_CHANGE_ME",
     "MQTT_ROOM_NAME": "myRoom",
     "MQTT_BASE_TOPIC": "roomUtilization/",
+    "SSID": "TODO_CHANGE_ME",
+    "NETWORK_KEY": "TODO_CHANGE_ME",
+    "ALLOW_CONFIG_UPDATE": true,
     "TIME_BETWEEN_SCANS_MS": -1,
     "SCAN_DURATION_MS": 10000,
     "SCAN_CONNECTION_TIMEOUT_MS": 5000,
     "ACTIVE_SCAN": true,
-    "FILTER_RSSI": -100
+    "FILTER_RSSI": -100,
+    "LOGGING": true,
+    "LOG_LEVEL": 1,
+    "NTP_HOST": "pool.ntp.org"
 }
