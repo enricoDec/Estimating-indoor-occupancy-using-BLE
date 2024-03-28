@@ -27,7 +27,7 @@ with open("unknownDevices.json", "r") as file:
 
 time_counts = {}
 
-for result in json_data["descriptors"]:
+for result in json_data:
     descriptor = result["descriptor"]
     time = result["time"]
     time = time // 1000 * 1000 # group by minute
@@ -42,6 +42,6 @@ with open("unknownDevices.json", "w") as file:
     json.dump(unknownDevices, file)
 
 sorted_time_counts = sorted(time_counts.items(), key=lambda x: x[0])
-json_data["smartphones"] = dict(sorted_time_counts)
+json_data = {"smartphones": dict(sorted_time_counts)}
 
 print(json.dumps(json_data))

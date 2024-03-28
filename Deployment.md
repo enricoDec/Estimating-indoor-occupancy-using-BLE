@@ -190,6 +190,7 @@ Install the modules:
 ```bash
 node-red admin install node-red-dashboard
 node-red admin install node-red-contrib-influxdb
+node-red admin install node-red-node-ui-table
 ```
 ### (Option 2): Using the Node-Red UI
 Open the Node-Red UI in a browser (e.g., http://localhost:1880).
@@ -197,6 +198,7 @@ Open the Node-Red UI in a browser (e.g., http://localhost:1880).
 `Manage Palette` -> `Install`:
 - node-red-dashboard
 - node-red-contrib-influxdb
+- node-red-node-ui-table
 
 ## 2.b Import the flow:
 1. Open NodeRed in a browser (e.g. http://localhost:1880).
