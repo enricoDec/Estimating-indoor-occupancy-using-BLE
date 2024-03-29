@@ -77,7 +77,7 @@ def post_scan(scan_results):
     utils.free()
 
 
-async def scan_and_collect_scan_results(active=True, scan_duration_ms=5000, filter_rssi=-90, interval_us=30000, window_us=30000) -> list[ScanResult]:
+async def scan_and_collect_scan_results(active=True, scan_duration_ms=5000, filter_rssi=-90, interval_us=100000 , window_us=100000) -> list[ScanResult]:
     # TODO: Check memory after each result and stop if free mem < 80% or so
     scan_results: list[ScanResult] = []
     scan_results_lock = Lock()
