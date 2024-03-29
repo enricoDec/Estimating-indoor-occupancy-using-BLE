@@ -1,33 +1,37 @@
-# BLE (Bluetooth Low Energy) Room occupancy detection
-This section provides an introduction to the project, while the deployment process is detailed in the [Deployment](./Deployment.md) document.
+# BLE (Bluetooth Low Energy) Room occupancy detection [![MIT license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](LICENSE)
+
+This project uses BLE technology to estimate the occupancy of a room. It capitalizes on the widespread use of BLE-capable devices, such as smartphones, smartwatches, and tablets, which individuals carry with them as part of their daily lives. The system is designed to be accurate, scalable, and privacy-friendly, offering a reliable solution for room occupancy detection.
+
+![Smartphone Counter](./res/smartphonesChart.png)
+
+This section provides an introduction to the project, while the deployment process is detailed [here](Deployment.md).
 
 Table of Contents
 =================
-- [BLE (Bluetooth Low Energy) Room occupancy detection](#ble-bluetooth-low-energy-room-occupancy-detection)
+- [BLE (Bluetooth Low Energy) Room occupancy detection ](#ble-bluetooth-low-energy-room-occupancy-detection-)
 - [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
   - [Motivation](#motivation)
 - [Improving Herbrich's Approach](#improving-herbrichs-approach)
   - [Current Approach](#current-approach)
   - [Improving the Accuracy of Occupancy Detection](#improving-the-accuracy-of-occupancy-detection)
-    - [Analyzing Advertising Data](#analyzing-advertising-data)
-    - [Connecting to the Device and Reading the Device Info Service](#connecting-to-the-device-and-reading-the-device-info-service)
-    - [Multiple BLE Scanners](#multiple-ble-scanners)
 - [Implementation](#implementation)
   - [The System Architecture](#the-system-architecture)
+  - [Configuration](#configuration)
 - [Future Work](#future-work)
   - [In-Depth Analysis of Smartphone Characteristics](#in-depth-analysis-of-smartphone-characteristics)
   - [Comprehensive Examination of Advertising Data](#comprehensive-examination-of-advertising-data)
   - [Distinguishing Moving and Stationary Devices](#distinguishing-moving-and-stationary-devices)
-  - [Address Hashing for Enhanced Privacy](#address-hashing-for-enhanced-privacy)
-  - [Streamlined Deployment with Docker](#streamlined-deployment-with-docker)
+  - [Address Hashing for Enhanced Privacy ✔](#address-hashing-for-enhanced-privacy-)
+  - [Streamlined Deployment with Docker ✔](#streamlined-deployment-with-docker-)
   - [Classifier-Based Smartphone Identification](#classifier-based-smartphone-identification)
   - [Integration with Home Assistant](#integration-with-home-assistant)
+  - [Aggregrate datapoints before displaying charts in Dashboard](#aggregrate-datapoints-before-displaying-charts-in-dashboard)
 
 
 # Introduction
 
-This project is based on the work of Justin Steven Herbrich, whose project can be accessed with the following [link](https://github.com/jutnhbr/dln-ble-scanner-for-room-utilization). Herbrich introduced an approach that capitalizes on the ubiquity of BLE-capable devices. The core concept is to utilize BLE technology to detect nearby devices to estimate the occupancy of a room. The primary objective of this project is to enhance and refine Herbrich's approach, making it more accurate and scalable.
+This project is based on the work of Justin Steven Herbrich, whose project can be accessed [here](https://github.com/jutnhbr/dln-ble-scanner-for-room-utilization). Herbrich introduced an approach that capitalizes on the ubiquity of BLE-capable devices. The core concept is to utilize BLE technology to detect nearby devices to estimate the occupancy of a room. The primary objective of this project is to enhance and refine Herbrich's approach, making it more accurate and scalable.
 
 Herbrich's approach uses BLE technology to estimate the occupancy of a room. This approach is particularly relevant due to the widespread use of BLE-capable devices, which range from smartphones and tablets to laptops and other devices. By using BLE, Herbrich's project aims to provide an accurate and flexible solution to estimate the occupancy of a room.
 
@@ -52,7 +56,7 @@ As outlined in Herbrich's original work, and verified by an examination of the c
 - The received signal strength indicator (RSSI) must surpass a predefined threshold, typically set at -100 dB.
 - The peripheral must possess a public address, which is a unique MAC address used for device identification.
 
-When all of these conditions are met, the system associates the peripheral as a consumer device, and consequently, with a person in the room. While these criteria help narrow down the devices that can be attributed to individuals, they also introduce certain limitations. For instance, if a person carries more than one consumer device, the system would count them as separate individuals. Moreover, the restriction to public addresses is becoming less viable as an increasing number of devices employ random addresses to protect user privacy.
+When all of these conditions are met, the system associates the peripheral as a consumer device, and consequently, with a person in the room. While these criteria help narrow down the devices that can be attributed to individuals, they also introduce certain limitations. For instance, if a person carries more than one consumer device, the system would count them as separate individuals. Moreover, the restriction to public addresses is becoming less viable as an increasing number of devices employ random addresses to protect user privacy. [\[1\]](https://gitlab.rz.htw-berlin.de/s0577953/dln-ble-scans-room-utilization/-/blob/48fb25084f68190d11563db367b945429b475130/documentation/Entwicklung_und_Analyse_einer_ESP32_Microcontroller_Anwendung_zur_Bestimmung_von_Raumauslastungen_mittels_regelm_%C3%A1iger_Bluetooth_Low_Energy_Scans.pdf)
 
 ## Improving the Accuracy of Occupancy Detection
 
@@ -68,7 +72,7 @@ BLE advertising data consists of information broadcasted by BLE devices in short
 - Complete Local Name (Data type: 0x09)
 - Appearance (Data type: 0x19)
 
-The Local Name while not commonly found in advertising data can be valuable resources for identifying the type of device. As outlined in the Core Specification Supplement, Part A, Section 1.2, the local name typically designates the device with a name for example "Speaker XY". The appearance type serves as a valuable indicator for recognizing smartphones. This characteristic is represented as a 2-byte value that delineates the device's category. Notably, values within the range of 0x0040 to 0x007F are indicative of a Phone. [BLE Documentation](https://www.bluetooth.com/specifications/assigned-numbers/)
+The Local Name while not commonly found in advertising data can be valuable resources for identifying the type of device. As outlined in the [Core Specification Supplement, Part A, Section 1.2](https://www.bluetooth.com/specifications/specs/core-specification-supplement-10/), the local name typically designates the device with a name for example "Speaker XY". The appearance type serves as a valuable indicator for recognizing smartphones. This characteristic is represented as a 2-byte value that delineates the device's category. Notably, values within the range of `0x0040` to `0x007F` are indicative of a Phone. [\[2\]](https://www.bluetooth.com/specifications/assigned-numbers/)
 
 ### Connecting to the Device and Reading the Device Info Service
 
@@ -82,17 +86,17 @@ For instance, an iPhone 13 provides the following information:
 - Manufacturer Name String: Apple Inc.
 - Model Number String: iPhone13,4
 
-This two-pronged approach, starting with advertising data analysis and progressing to device connection and service interrogation, ensures more reliable and accurate classification. It also accommodates devices that do not directly advertise their names in the advertising data but include this information in the Device Info Service. [BLE Documentation](https://www.bluetooth.com/specifications/assigned-numbers/)
+This two-pronged approach, starting with advertising data analysis and progressing to device connection and service interrogation, ensures more reliable and accurate classification. It also accommodates devices that do not directly advertise their names in the advertising data but include this information in the Device Info Service. [\[3\]](https://www.bluetooth.com/specifications/assigned-numbers/)
 
 ### Multiple BLE Scanners
 
 The project has also tackled scalability and precision challenges by introducing support for multiple BLE scanners. In Herbrich's original approach, room occupancy detection was limited to a single BLE scanner operating in a room at a given time, potentially resulting in data duplication and room-specific constraints.
 
-In the new approach, multiple scanners can be deployed within the same or different rooms. These scanners are efficiently managed by the central system to ensure accurate data aggregation from various rooms. This is achieved by assigning each scan with a unique scan ID and room ID. The scan ID distinguishes between scans, while the room ID identifies the specific room in which the scanner is located. Notably, the Bluetooth address of the device is included in the scan results to prevent the same device from being counted twice. However, it's important to highlight that this address is not stored in the database to protect user privacy, a more private approach is addressed in the Future Work section.
+In the new approach, multiple scanners can be deployed within the same or different rooms. These scanners are efficiently managed by the central system to ensure accurate data aggregation from various rooms. This is achieved by assigning each scan with a unique scan ID and room ID. The scan ID distinguishes between scans, while the room ID identifies the specific room in which the scanner is located. Notably, the Bluetooth address of the device is included in the scan results to prevent the same device from being counted twice. However, it's important to highlight that the only the hash of the address is stored.
 
 # Implementation
 
-The project was structured into two main components: the central system and the BLE scanner. The central system is responsible for orchestrating the BLE scanners, collecting and analyzing data, and storing the results in a database. The BLE scanner is responsible for scanning for BLE devices and publishing the results to the central system. As seen in the overview diagram, the central system needs to run NodeRed which is used to orchestrate the BLE scanners, collect the data and send it to the Database and InfluxDB which is ultimately used to persist the data. The BLE scanner is implemented on an ESP32 and communicates with the central system via MQTT.
+The project was structured into two main components: the central system and the BLE scanner. The central system is responsible for orchestrating the BLE scanners, collecting and analyzing data, and storing the results in a database. The BLE scanner is responsible for scanning for BLE devices and publishing the results to the central system. As seen in the overview diagram, the central system needs to run NodeRed which is used to orchestrate the BLE scanners, collect and analyze the data and send it to the Database which is ultimately used to persist the data. The BLE scanner is implemented on an ESP32 running micropython and communicates with the central system via MQTT.
 
 ![System Overview](./res/BLE_Overview.png)
 
@@ -102,11 +106,10 @@ The system architecture is detailed in this section, offering a step-by-step exp
 
 ![Sequence Diagram](./res/BLE_Sequence_Diagram.png)
 
-1. Each BLE Scanner is initiated by sending an MQTT message. This message includes two essential components: a unique scan ID and a room ID that identifies the specific room in which the scanner is deployed. Note it is possible to configure the scanner to scan on a timer using the `TIME_BETWEEN_SCANS_MS` parameter in the `config.json` file. In this case the uuid is generated by the scanner itself.
+1. Each scan is initiated by sending an MQTT message. This message includes a room ID that identifies the specific room which should be scanned, a room ID of `all` can be also specified if every room should be scanned. We suggest and this is configured by default, to trigger the scans on a timer using the `TIME_BETWEEN_SCANS_MS` parameter in the `config.json` file.
 
 ```json
 {
-  "uuid": "f56eb9f0-aaf9-436d-b0fb-df65ecb06c7e",
   "room": "myRoom"
 }
 ```
@@ -117,46 +120,67 @@ The system architecture is detailed in this section, offering a step-by-step exp
 
 The trigger for initiating scans is published to the topic roomUtilization/doScan, while the BLE Scanner subscribes to the same topic.
 
-3. Once scanning is initiated, the BLE Scanner collects scan results and publishes them to a designated topic structured as roomUtilization/scans/myRoom, where myRoom signifies the room's unique identifier. The central system, responsible for data aggregation, subscribes to the general topic roomUtilization/scans/+, ensuring it can receive data from all scanner-equipped rooms. A sample scan result is shown below:
+3. Once scanning is initiated a UUID is generated for the scan and the BLE Scanner collects scan results and publishes them to a designated topic. The topic is structured as `roomUtilization/scans/myRoom`, where `myRoom` signifies the room's unique identifier. The central system, responsible for data aggregation, subscribes to the general topic roomUtilization/scans/+, ensuring it can receive data from all scanner-equipped rooms. As seen in the sample scan result below, each scan includes a timestamp, room identifier, a UUID and the actual data. The scan results are also partitioned to minimize the amount of data that the microcontroller has to hold in memory. This partitioning ensures that the system can handle a larger number of devices and scan results without running into memory constraints. Since we cannot directly control the memory, most likely this will help but not solve the problem. To have a reliable system, it would be necessary to reimplement the system using C.
 
 ```json
 {
-    "timestamp_utc": "10/3/2024 17:30",
-    "room": "myRoom",
-    "uuid": "646a107ccca2aada024d44d605c87e25",
-    "scanresult": [
-        {
-            "connAttempts": 0,
-            "rssi": -77,
-            "addr": "e4:0f:01:ff:1b:0d",
-            "connectable": false,
-            "connSuccessful": false,
-            "descriptor": null,
-            "manufacturerCode": 35
-        },
-        {
-            "connAttempts": 1,
-            "rssi": -79,
-            "addr": "c4:36:1a:bb:ab:f2",
-            "connectable": true,
-            "connSuccessful": true,
-            "descriptor": "Apple Inc. iPhone15,3",
-            "manufacturerCode": 76,
-        },
-    ]
+  "timestamp_utc": 1711724776000,
+  "room": "myRoom",
+  "part": 1,
+  "totalParts": 3,
+  "uuid": "84086033a9225f2233c338630de705cf",
+  "scanresult": [
+    {
+      "connAttempts": 1,
+      "rssi": -79,
+      "addr": "xx:xx:xx:xx:xx:xx",
+      "connectable": true,
+      "connSuccessful": true,
+      "descriptor": "Apple Inc. iPhone15,3",
+      "manufacturerCode": 76
+    },
+    {
+      "connAttempts": 0,
+      "rssi": -81,
+      "addr": "xx:xx:xx:xx:xx:xx",
+      "connectable": true,
+      "connSuccessful": false,
+      "descriptor": "2;0:04:2F:C1:39:8F;eTRV",
+      "manufacturerCode": null
+    },
+    {...}
+  ]
 }
 ```
-4. To accommodate multiple scanners across various rooms, the central system employs a waiting mechanism with a predetermined timeout. During this interval, it collects scan results from different scanners. Each scanner is assigned a unique UUID, derived from the combination of the room and scan trigger ID. This distinctive UUID ensures that scan results from various rooms and triggers are treated as separate data entities. This differentiation is crucial, especially in cases where two scans might be delivered at precisely the same time, preserving the integrity of the collected data.
 
-5. Subsequently, the central system performs an analysis of the collected scans, focusing on each unique UUID. The results of this analysis are systematically stored in an InfluxDB database, offering an efficient and well-organized approach to data management.
+4. To accommodate multiple scanners across various rooms that each send partitioned data, the central system employs a waiting mechanism with a predetermined timeout of 1 hour. During this interval, it collects scan results from different scanners merging them by uuid and dropping scans older then 1 hour. When a scan is complete and all partitions have been received, the central system persists the data in the InfluxDB database. This means that duplicates can be potentially stored in the database, but this is not a problem since the system is designed to handle this at a later stage and gives the opportunity to analyze the data of each scanner separately. The data is stored in InfluxDB 2 in the following format:
+
+| Field Name         | Description                                                                        |
+| ------------------ | ---------------------------------------------------------------------------------- |
+| `connAttempts`     | Number of connection attempts.                                                     |
+| `connSuccessful`   | Boolean indicating whether the connection attempt was successful (`true`/`false`). |
+| `connectable`      | Boolean indicating whether the device is connectable (`true`/`false`).             |
+| `descriptor`       | Description of the device.                                                         |
+| `manufacturerCode` | Manufacturer code of the device.                                                   |
+| `rssi`             | Received Signal Strength Indicator (RSSI) of the device.                           |
+
+| Tag Name | Description                        |
+| -------- | ---------------------------------- |
+| `addr`   | Address of the device.             |
+| `room`   | Room where the scan was performed. |
+
+5. On demand, the central system retireves the data from the database and performs an analysis of the scans displaying it on a NodeRed Dashboard.
 
 The current system employs a rule-based solution for classifying scan results into two categories: smartphones and unknown devices. This classification is vital for estimating room occupancy accurately.
 
-The process begins by loading the scan results from the input file provided as an argument. It also reads a list of known smartphones and a list of previously encountered unknown devices from respective JSON files.
-
 The heart of the classification process lies in comparing the scan results with a list of known smartphone models. If a match is found, the system counts the device as a smartphone. However, if no match is found in the known smartphones list, the device is considered an unknown device. Its descriptor is then added to the list of previously encountered unknown devices if not already present.
 
-Upon processing all scan results, the system compiles a summary that includes the number of smartphones detected and the room associated with the scan results. This data is then stored in the InfluxDB database.
+![Manufacturer bar chart](./res/ManufacturerChart.png)
+*Above some example data collected over few hours in my studio shows all the manufacturers found by the scanner (this is if they advertise it)*
+
+
+![Average RSSI line chart](./res/avgRssiChart.png)
+*This chart shows the average RSSI of the devices found in the room over time.*
 
 ## Configuration
 The scanner can be configured by modifying the `config.json` file. The following parameters can be adjusted:
@@ -185,7 +209,7 @@ Here's the markdown table documenting all the options in the configuration:
 | ACTIVE_SCAN                | Active Scan (True) or Passive Scan (False)                                 | true                                       |
 | FILTER_RSSI                | Only Include Devices with RSSI higher than this value (0 for no filter)    | -100                                       |
 
-Furthermore these settings can be updated directly on the device via MQTT. By default the device is subscribed to the topic `roomUtilization/updateConfig` and listens for configuration updates. The following message can be used to update the configuration:
+Furthermore these settings can be updated directly on the device via MQTT. By default the device is subscribed to the topic `roomUtilization/updateConfig` and listens for configuration updates. The following data can be used to update the configuration:
 
 ```json
 {
@@ -222,10 +246,10 @@ Advertising data, integral to BLE communication, holds immense potential for gre
 ## Distinguishing Moving and Stationary Devices
 Enhancing the capability to differentiate between moving and stationary devices is another intriguing possibility. The possibility of using received signal strength indicator (RSSI) fluctuations to make informed decisions could be explored. For instance, stable RSSI values over time might suggest a device is stationary (think printers or TVs), while varying RSSI readings could imply movement. This insight can be valuable for excluding stationary devices from occupancy estimates. It's important to note that this approach may face challenges with devices employing frequently changing random addresses as these would not be recognized as the same device over time. However, in combination with advanced techniques like the "address-carryover algorithm," it could prove to be a viable solution.
 
-## Address Hashing for Enhanced Privacy
+## Address Hashing for Enhanced Privacy ✔
 Address privacy is a growing concern. While the current solution doesn't persistently store peripheral addresses for privacy reasons, it could be considerate to hash the addresses on the ESP32 itself. This approach could potentially enhance user privacy while ensuring the system functions effectively.
 
-## Streamlined Deployment with Docker
+## Streamlined Deployment with Docker ✔
 To make the deployment process more accessible and user-friendly, automation using tools like Docker could be explored. This move toward automation aims to simplify setup and configuration, reducing the complexities often associated with system deployment.
 
 ## Classifier-Based Smartphone Identification
@@ -234,3 +258,5 @@ In the quest for accuracy, the possibility of a shift from rule-based smartphone
 ## Integration with Home Assistant
 Lastly, the exploration of integrating the system with popular home automation platforms like Home Assistant could be considered. This integration would not only enhance the system's usability but also open up new avenues for smart home applications and interactions.
 
+## Aggregrate datapoints before displaying charts in Dashboard
+Currently the system is displaying the data in the dashboard by querying the database for each datapoint. This is not efficient and can be improved by aggregating the data before displaying it in the dashboard. This can be done by using the InfluxDB query language to aggregate the data before displaying it in the dashboard. For example based on the choosen period the step size could be calculated and the data could be aggregated based on the step size. This would reduce the amount of data that needs to be transferred and displayed in the dashboard. Another option could be letting the user choose it in the dashboard.

@@ -9,13 +9,12 @@ Table of Contents
 - [0. Prerequisites](#0-prerequisites)
   - [0.1 Ports](#01-ports)
 - [1. Install Dependencies](#1-install-dependencies)
-  - [1.0 Python3](#10-python3)
-  - [1.1 Docker](#11-docker)
-  - [1.2 Portainer (Optional)](#12-portainer-optional)
-  - [1.3 Get the project](#13-get-the-project)
-  - [1.4 Mosquitto Stack](#14-mosquitto-stack)
-  - [1.5 InfluxDB Stack](#15-influxdb-stack)
-  - [1.6 Node-Red Stack](#16-node-red-stack)
+  - [1.0 Docker](#10-docker)
+  - [1.1 Portainer (Optional)](#11-portainer-optional)
+  - [1.2 Get the project](#12-get-the-project)
+  - [1.3 Mosquitto Stack](#13-mosquitto-stack)
+  - [1.4 InfluxDB Stack](#14-influxdb-stack)
+  - [1.5 Node-Red Stack](#15-node-red-stack)
 - [2. Setup Node-Red](#2-setup-node-red)
   - [2.a Install required Modules](#2a-install-required-modules)
   - [2.b Import the flow:](#2b-import-the-flow)
@@ -27,6 +26,9 @@ Table of Contents
   - [3. Configure the project](#3-configure-the-project)
   - [4. Upload the project to the board](#4-upload-the-project-to-the-board)
 - [Working with the project and throubleshooting](#working-with-the-project-and-throubleshooting)
+  - [(Option 1) Get code completion for the project](#option-1-get-code-completion-for-the-project)
+  - [(Option 2) Get code completion for the project by stubbing](#option-2-get-code-completion-for-the-project-by-stubbing)
+  - [(Option 3) (Good luck) Get code completion for the project by stubbing yourself](#option-3-good-luck-get-code-completion-for-the-project-by-stubbing-yourself)
 
 
 # 0. Prerequisites
@@ -65,7 +67,6 @@ We need 3 services to run the project:
 - [X] Mosquitto
 - [X] InfluxDB
 - [X] Node-Red
-- [X] Python3
 - [X] Docker (Optional)
 - [X] Portainer (Optional)
 
@@ -75,21 +76,17 @@ On a side note NodeRed can create a lot of log entries in journalctl. It is advi
 sudo journalctl --vacuum-size=100M
 ```
 
-## 1.0 Python3
-Check the official guide to install Python3 depending on your OS.
-[Official Python3 Beginner Guide](https://wiki.python.org/moin/BeginnersGuide/Download)
-
-## 1.1 Docker
+## 1.0 Docker
 Check the official guide to install Docker depending on your OS.
 [Official Docker Installation Guide](https://docs.docker.com/engine/install/debian/)
 
-## 1.2 Portainer (Optional)
+## 1.1 Portainer (Optional)
 Portainer is a web-based user interface for managing Docker containers. It is not required but is a nice tool to manage your Docker containers.
 [Portainer Installation Guide](https://docs.portainer.io/start/install-ce/server/docker/linux).
 
 Portainer's user interface should be available at: https://localhost:9443
 
-## 1.3 Get the project
+## 1.2 Get the project
 Clone the project from the GitLab repository:
 ```bash
 git clone https://gitlab.rz.htw-berlin.de/s0567011/ble-room-occupancy-detection
@@ -99,7 +96,7 @@ In alternative if you don't have git installed or want to mess with authenticati
  scp -r /path/to/ble-room-occupancy-detection xxxx@xxxxxx:/path/to/ble-room-occupancy-detection
 ```
 
-## 1.4 Mosquitto Stack
+## 1.3 Mosquitto Stack
 Change to the Mosquitto deployment directory:
 ```bash
 cd Deployment/mosquitto
@@ -121,7 +118,7 @@ Restart the Mosquitto service to apply the changes:
 docker compose restart
 ```
 
-## 1.5 InfluxDB Stack
+## 1.4 InfluxDB Stack
 This is kind of optional if no data should be stored. The Node-Red flow can be configured to store the data in a different database.
 
 Change to the InfluxDB deployment directory:
@@ -135,7 +132,7 @@ docker compose up -d
 The service should be available at: http://localhost:8086
 Access the web interface in your browser and follow the setup guide. NodeRed is configured to use `HTW` as organization, but can be manually changed if prefered. Be sure to write down the organization and the token (a new token can also be created later). Note when you copy the token in my experience the **copy to clipboard** button does not work correctly (copy&past manually). Go to Buckets and create a new one called `BLE_SCANS`.
 
-## 1.6 Node-Red Stack
+## 1.5 Node-Red Stack
 Change to the Node-Red deployment directory:
 ```bash
 cd Deployment/nodered
@@ -148,7 +145,7 @@ The container is started with a default user and password:
 - User: `admin`
 - Password: `projectIotWiSe23`
 
-### 1.6b Change Node-Red Panel password:
+### 1.5b Change Node-Red Panel password:
 Get container shell:
 ```bash
 docker exec -it nodered /bin/bash
