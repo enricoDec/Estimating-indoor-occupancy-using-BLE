@@ -56,7 +56,7 @@ config = {
     # True = Active Scan | False = Passive Scan (Only listens for advertising packets sent by BLE devices, uses less power)
     ACTIVE_SCAN: True,
     # Only Include Devices with a higher RSSI (0 for no filter)
-    FILTER_RSSI: -100,
+    FILTER_RSSI: -70,
     # True = Prints Scanning Process, Results and other events
     LOGGING: True,
     # Log Level (0 = Debug (Includes info and more), 1 = Info, 2 = Warning, 3 = Error)

@@ -85,7 +85,7 @@ async def scan_and_collect_scan_results(active=True, scan_duration_ms=5000, filt
         async for result in scanner:
             if (_filter_by_rssi(result.rssi, filter_rssi)):
                 log("BLE-Scanner > Ignored device with RSSI >" +
-                    str(filter_rssi).strip())
+                    str(filter_rssi).strip(), log_type=0)
                 continue
             await _update_scan_results(scan_results_lock, scan_results, result)
     return scan_results
