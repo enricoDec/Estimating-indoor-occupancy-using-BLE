@@ -170,6 +170,21 @@ Restart the container:
 docker restart nodered
 ```
 
+### 1.5c Disable Node-Red logging
+By default Node-Red logs a lot of information, the log file can grow very large. The docker compose file already disables it. If you install Node-Red manually, it is advised to disable the logging. To do so, open the `settings.js` file and change the logging level to `off`:
+``` json
+    logging: {
+        console: {
+            /** off - turn off all logging (doesn't affect metrics or audit) */
+            level: "off",
+            /** Whether or not to include metric events in the log output */
+            metrics: false,
+            /** Whether or not to include audit events in the log output */
+            audit: false
+        }
+    },
+```
+
 # 2. Setup Node-Red
 Continue here if you have installed Node-Red manually or using Docker.
 
