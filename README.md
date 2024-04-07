@@ -260,3 +260,7 @@ Lastly, the exploration of integrating the system with popular home automation p
 
 ## Aggregrate datapoints before displaying charts in Dashboard
 Currently the system is displaying the data in the dashboard by querying the database for each datapoint. This is not efficient and can be improved by aggregating the data before displaying it in the dashboard. This can be done by using the InfluxDB query language to aggregate the data before displaying it in the dashboard. For example based on the choosen period the step size could be calculated and the data could be aggregated based on the step size. This would reduce the amount of data that needs to be transferred and displayed in the dashboard. Another option could be letting the user choose it in the dashboard.
+
+# Papers
+[Estimating indoor occupancy through low-cost BLE
+devices](https://arxiv.org/pdf/2102.03351v2.pdf)
